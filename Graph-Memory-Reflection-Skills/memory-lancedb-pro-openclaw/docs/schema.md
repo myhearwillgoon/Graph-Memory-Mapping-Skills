@@ -277,7 +277,7 @@ ORDER BY frequency DESC
 
 ## 4. 向量检索集成
 
-### 4.1 LanceDB 表结构
+### 4.1 Graph Memory 表结构
 ```typescript
 interface VectorRecord {
   id: string;           // 与 Neo4j 节点 id 一致
@@ -293,7 +293,7 @@ interface VectorRecord {
 ```
 
 ### 4.2 混合检索流程
-1. 向量检索 (LanceDB): 语义相似度搜索
+1. 向量检索 (Graph Memory): 语义相似度搜索
 2. 图谱检索 (Neo4j): 关系路径查询
 3. 融合排序: RRF (Reciprocal Rank Fusion)
 

@@ -1,6 +1,6 @@
-# Silra.cn API Provider for memory-lancedb-pro
+# Silra.cn API Provider for memory-graph-a2a
 
-This PR adds support for Silra.cn API provider, enabling users in China mainland to use memory-lancedb-pro with local embedding and LLM services.
+This PR adds support for Silra.cn API provider, enabling users in China mainland to use memory-graph-a2a with local embedding and LLM services.
 
 ## 🎯 Motivation
 
@@ -25,7 +25,7 @@ This PR implements:
 ### Prerequisites
 
 - Silra.cn API Key: Get from https://silra.cn/console/api-key
-- memory-lancedb-pro v1.1.0+ installed
+- memory-graph-a2a v1.1.0+ installed
 
 ### Configuration
 
@@ -34,9 +34,9 @@ Add to your `openclaw.json`:
 ```json
 {
   "plugins": {
-    "slots": { "memory": "memory-lancedb-pro" },
+    "slots": { "memory": "memory-graph-a2a" },
     "entries": {
-      "memory-lancedb-pro": {
+      "memory-graph-a2a": {
         "enabled": true,
         "config": {
           "embedding": {

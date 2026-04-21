@@ -1,6 +1,6 @@
 # Graph Memory Mapping Skills
 
-> **Graph-Enhanced Memory System** — Neo4j + LanceDB hybrid retrieval for multi-agent collaboration
+> **Graph-Enhanced Memory System** — Neo4j + Graph Memory hybrid retrieval for multi-agent collaboration
 
 **Version**: 1.0.0  
 **Branch**: `feat/graph-memory`  
@@ -61,7 +61,7 @@ Built for **multi-agent collaboration** where agents share a unified graph memor
 ┌─────────────────────────────────────────────────────────────┐
 │              Graph Memory Layer                              │
 │  ┌─────────────────┐  ┌─────────────────┐                  │
-│  │  Neo4j          │  │  LanceDB        │                  │
+│  │  Neo4j          │  │  Graph Memory        │                  │
 │  │  (Knowledge    │  │  (Vector        │                  │
 │  │   Graph)        │  │   Retrieval)    │                  │
 │  └─────────────────┘  └─────────────────┘                  │
@@ -158,7 +158,7 @@ class GraphClient {
   async query(cypher: string, params?: any): Promise<any>;
   async write(node: Node, relationships?: Relationship[]): Promise<void>;
   
-  // LanceDB Operations
+  // Graph Memory Operations
   async search(query: string, topK?: number): Promise<VectorResult[]>;
   async insert(embedding: number[], metadata: any): Promise<void>;
   
@@ -186,9 +186,9 @@ RETURN path LIMIT 10;
 ## 📁 Project Structure
 
 ```
-memory-lancedb-pro-openclaw/
+memory-graph-a2a-openclaw/
 ├── src/
-│   ├── graph-client.ts        # Neo4j + LanceDB SDK
+│   ├── graph-client.ts        # Neo4j + Graph Memory SDK
 │   ├── mapper.ts              # Memory → Graph mapping
 │   ├── retriever.ts           # Graph retrieval engine
 │   ├── fusion.ts              # Vector + Graph fusion
@@ -221,7 +221,7 @@ memory-lancedb-pro-openclaw/
 
 - **Node.js** 18+
 - **Neo4j** 5.0+ (Docker or local)
-- **LanceDB** 0.5+
+- **Graph Memory** 0.5+
 - **OpenClaw** Gateway running
 
 ### Installation
@@ -266,10 +266,10 @@ See `CONFIG_SILRA.md` for China API provider setup (Silra.cn, etc.)
 
 | Task | Status | Notes |
 |------|--------|-------|
-| MGP-001: Fork memory-lancedb-pro | ✅ Complete | Branch: `feat/graph-memory` |
+| MGP-001: Fork memory-graph-a2a | ✅ Complete | Branch: `feat/graph-memory` |
 | MGP-002: Reuse core components | ✅ Complete | embedder, chunker, llm-client |
 | MGP-003: Design Graph Schema | ✅ Complete | Schema documented in README |
-| MGP-004: Implement GraphClient SDK | ✅ Complete | Neo4j + LanceDB wrapper |
+| MGP-004: Implement GraphClient SDK | ✅ Complete | Neo4j + Graph Memory wrapper |
 | MGP-005: Memory → Graph Mapper | ✅ Complete | Data mapping logic |
 | MGP-006: Graph Retriever | ✅ Complete | Query engine |
 | MGP-007: Vector + Graph Fusion | ✅ Complete | Hybrid retrieval |

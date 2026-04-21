@@ -1,11 +1,11 @@
 /**
  * GraphClient SDK for Memory Graph Pro
  * 
- * Provides unified interface for Neo4j graph operations and LanceDB vector storage.
+ * Provides unified interface for Neo4j graph operations and Graph Memory vector storage.
  */
 
 import neo4j, { Driver, Session, Transaction, Record as Neo4jRecord } from 'neo4j-driver';
-import * as lancedb from '@lancedb/lancedb';
+import * as graph-a2a from '@graph-a2a/graph-a2a';
 import { EmbeddingProvider } from '../types';
 import { logger } from '../utils/logger';
 
@@ -20,8 +20,8 @@ export interface GraphClientConfig {
   neo4jPassword: string;
   neo4jDatabase?: string;
 
-  // LanceDB Configuration
-  lanceDbPath: string;
+  // Graph Memory Configuration
+  neo4jUri: string;
 
   // Optional Providers
   embeddingProvider?: EmbeddingProvider;
@@ -84,7 +84,7 @@ export interface GraphEvent {
 
 export class GraphClient {
   private driver: Driver | null = null;
-  private db: any = null; // LanceDB connection
+  private db: any = null; // Graph Memory connection
   private config: GraphClientConfig;
   private eventHandlers: Map<string, Set<EventHandler>> = new Map();
   private isConnected = false;
@@ -102,7 +102,7 @@ export class GraphClient {
   // ============================================================================
 
   /**
-   * Initialize connections to both Neo4j and LanceDB
+   * Initialize connections to both Neo4j and Graph Memory
    */
   async connect(): Promise<void> {
     try {
@@ -120,9 +120,9 @@ export class GraphClient {
       await this.driver.verifyConnectivity();
       logger.info('[GraphClient] Neo4j connected successfully');
 
-      // Connect to LanceDB
-      this.db = await lancedb.connect(this.config.lanceDbPath);
-      logger.info('[GraphClient] LanceDB connected successfully');
+      // Connect to Graph Memory
+      this.db = await graph-a2a.connect(this.config.neo4jUri);
+      logger.info('[GraphClient] Graph Memory connected successfully');
 
       this.isConnected = true;
 
@@ -388,11 +388,11 @@ export class GraphClient {
   }
 
   // ============================================================================
-  // Vector Operations (LanceDB)
+  // Vector Operations (Graph Memory)
   // ============================================================================
 
   /**
-   * Insert a vector record into LanceDB
+   * Insert a vector record into Graph Memory
    */
   async insertVector(record: VectorRecord): Promise<void> {
     this.ensureConnected();

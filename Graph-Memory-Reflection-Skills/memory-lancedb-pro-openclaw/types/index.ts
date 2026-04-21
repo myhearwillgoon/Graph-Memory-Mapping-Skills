@@ -210,8 +210,8 @@ export interface MemoryGraphProConfig {
   neo4jPassword?: string;
   neo4jDatabase?: string;
   
-  // LanceDB Configuration
-  lanceDbPath?: string;
+  // Graph Memory Configuration
+  neo4jUri?: string;
   
   // Feature toggles
   autoCapture?: boolean;

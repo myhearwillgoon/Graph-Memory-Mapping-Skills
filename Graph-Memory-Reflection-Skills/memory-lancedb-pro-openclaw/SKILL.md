@@ -1,11 +1,11 @@
 ---
-name: memory-lancedb-pro
-description: This skill should be used when working with memory-lancedb-pro, a production-grade long-term memory MCP plugin for OpenClaw AI agents. Use when installing, configuring, or using any feature of memory-lancedb-pro including Smart Extraction, hybrid retrieval, memory lifecycle management, multi-scope isolation, self-improvement governance, or any MCP memory tools (memory_recall, memory_store, memory_forget, memory_update, memory_stats, memory_list, self_improvement_log, self_improvement_extract_skill, self_improvement_review).
+name: memory-graph-a2a
+description: This skill should be used when working with memory-graph-a2a, a production-grade long-term memory MCP plugin for OpenClaw AI agents. Use when installing, configuring, or using any feature of memory-graph-a2a including Smart Extraction, hybrid retrieval, memory lifecycle management, multi-scope isolation, self-improvement governance, or any MCP memory tools (memory_recall, memory_store, memory_forget, memory_update, memory_stats, memory_list, self_improvement_log, self_improvement_extract_skill, self_improvement_review).
 ---
 
-# memory-lancedb-pro
+# memory-graph-a2a
 
-Production-grade long-term memory system (v1.1.0-beta.8) for OpenClaw AI agents. Provides persistent, intelligent memory storage using LanceDB with hybrid vector + BM25 retrieval, LLM-powered Smart Extraction, Weibull decay lifecycle, and multi-scope isolation.
+Production-grade long-term memory system (v1.1.0-beta.8) for OpenClaw AI agents. Provides persistent, intelligent memory storage using Graph Memory with hybrid vector + BM25 retrieval, LLM-powered Smart Extraction, Weibull decay lifecycle, and multi-scope isolation.
 
 For full technical details (thresholds, formulas, database schema, source file map), see `references/full-reference.md`.
 
@@ -143,7 +143,7 @@ If not found, ask the user for the path.
 
 ```bash
 # Read and display current plugins config before changing anything
-openclaw config get plugins.entries.memory-lancedb-pro 2>/dev/null
+openclaw config get plugins.entries.memory-graph-a2a 2>/dev/null
 openclaw config get plugins.slots.memory 2>/dev/null
 ```
 
@@ -153,7 +153,7 @@ openclaw config get plugins.slots.memory 2>/dev/null
 
 Use the config block for the chosen plan. Substitute actual API keys inline if the user provided them directly; keep `${ENV_VAR}` syntax if they confirmed env vars are set in the gateway process.
 
-**Plan A config (`plugins.entries.memory-lancedb-pro.config`):**
+**Plan A config (`plugins.entries.memory-graph-a2a.config`):**
 ```json
 {
   "embedding": {
@@ -332,20 +332,20 @@ curl http://localhost:11434/v1/embeddings \
 
 **If Ollama is on a different host or Docker:** Replace `http://localhost:11434/v1` with the actual host, e.g. `http://192.168.1.100:11434/v1`. Also set `OLLAMA_HOST=0.0.0.0` in the Ollama process to allow remote connections.
 
-For the **`plugins.entries.memory-lancedb-pro.config`** block, merge into the existing `openclaw.json` rather than replacing the whole file. Use a targeted edit of only the memory plugin config section.
+For the **`plugins.entries.memory-graph-a2a.config`** block, merge into the existing `openclaw.json` rather than replacing the whole file. Use a targeted edit of only the memory plugin config section.
 
 ### Step 6 — Apply the config
 
-Read the current `openclaw.json` first, then apply a surgical edit to the `plugins.entries.memory-lancedb-pro` section. Use the template that matches your installation method:
+Read the current `openclaw.json` first, then apply a surgical edit to the `plugins.entries.memory-graph-a2a` section. Use the template that matches your installation method:
 
 **Method 1 — `openclaw plugins install` (plugin was installed via the plugin manager):**
 No `load.paths` or `allow` needed — the plugin manager already registered the plugin.
 ```json
 {
   "plugins": {
-    "slots": { "memory": "memory-lancedb-pro" },
+    "slots": { "memory": "memory-graph-a2a" },
     "entries": {
-      "memory-lancedb-pro": {
+      "memory-graph-a2a": {
         "enabled": true,
         "config": {
           "<<OPTIMAL CONFIG HERE>>"
@@ -361,11 +361,11 @@ Both `load.paths` AND `allow` are required — workspace plugins are disabled by
 ```json
 {
   "plugins": {
-    "load": { "paths": ["plugins/memory-lancedb-pro"] },
-    "allow": ["memory-lancedb-pro"],
-    "slots": { "memory": "memory-lancedb-pro" },
+    "load": { "paths": ["plugins/memory-graph-a2a"] },
+    "allow": ["memory-graph-a2a"],
+    "slots": { "memory": "memory-graph-a2a" },
     "entries": {
-      "memory-lancedb-pro": {
+      "memory-graph-a2a": {
         "enabled": true,
         "config": {
           "<<OPTIMAL CONFIG HERE>>"
@@ -381,17 +381,17 @@ Both `load.paths` AND `allow` are required — workspace plugins are disabled by
 ```bash
 openclaw config validate
 openclaw gateway restart
-openclaw logs --follow --plain | rg "memory-lancedb-pro"
+openclaw logs --follow --plain | rg "memory-graph-a2a"
 ```
 
 Expected output confirms:
-- `memory-lancedb-pro: smart extraction enabled`
-- `memory-lancedb-pro@...: plugin registered`
+- `memory-graph-a2a: smart extraction enabled`
+- `memory-graph-a2a@...: plugin registered`
 
 ### Step 8 — Verify
 
 ```bash
-openclaw plugins info memory-lancedb-pro
+openclaw plugins info memory-graph-a2a
 openclaw hooks list --json | grep -E "before_agent_start|agent_end|command:new"
 openclaw memory-pro stats
 ```
@@ -410,19 +410,19 @@ Then do a quick smoke test:
 For new users, the community one-click installer handles everything automatically — path detection, schema validation, auto-update, provider selection, and rollback:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/CortexReach/toolbox/main/memory-lancedb-pro-setup/setup-memory.sh -o setup-memory.sh
+curl -fsSL https://raw.githubusercontent.com/CortexReach/toolbox/main/memory-graph-a2a-setup/setup-memory.sh -o setup-memory.sh
 bash setup-memory.sh
 ```
 
 Options: `--dry-run` (preview only), `--beta` (include pre-release), `--ref v1.2.0` (pin version), `--selfcheck-only`, `--uninstall`.
 
-Source: https://github.com/CortexReach/toolbox/tree/main/memory-lancedb-pro-setup
+Source: https://github.com/CortexReach/toolbox/tree/main/memory-graph-a2a-setup
 
 ---
 
 ### Requirements
 - Node.js 24 recommended (Node 22 LTS minimum, `22.16+`)
-- LanceDB ≥ 0.26.2
+- Graph Memory ≥ 0.26.2
 - OpenAI SDK ≥ 6.21.0
 - TypeBox 0.34.48
 
@@ -430,14 +430,14 @@ Source: https://github.com/CortexReach/toolbox/tree/main/memory-lancedb-pro-setu
 
 ```bash
 # Install from npm registry (@beta tag = latest pre-release, e.g. 1.1.0-beta.8)
-openclaw plugins install memory-lancedb-pro@beta
+openclaw plugins install memory-graph-a2a@beta
 
 # Install stable release from npm (@latest tag, e.g. 1.0.32)
-openclaw plugins install memory-lancedb-pro
+openclaw plugins install memory-graph-a2a
 
 # Or install from a local git clone — use master branch (matches npm @beta)
-git clone -b master https://github.com/CortexReach/memory-lancedb-pro.git /tmp/memory-lancedb-pro
-openclaw plugins install /tmp/memory-lancedb-pro
+git clone -b master https://github.com/CortexReach/memory-graph-a2a.git /tmp/memory-graph-a2a
+openclaw plugins install /tmp/memory-graph-a2a
 ```
 
 > **npm vs GitHub branches:** `@beta` installs from the npm registry (not directly from GitHub). The repo has two long-lived branches: **`master`** is the release branch (matches npm `@beta`), **`main`** is older/behind. Always clone `master` if you want code that matches the published beta.
@@ -446,9 +446,9 @@ Then bind the memory slot and add your config (see Configuration section below):
 ```json
 {
   "plugins": {
-    "slots": { "memory": "memory-lancedb-pro" },
+    "slots": { "memory": "memory-graph-a2a" },
     "entries": {
-      "memory-lancedb-pro": {
+      "memory-graph-a2a": {
         "enabled": true,
         "config": { "<<your config here>>" }
       }
@@ -460,7 +460,7 @@ Then bind the memory slot and add your config (see Configuration section below):
 Restart and verify:
 ```bash
 openclaw gateway restart
-openclaw plugins info memory-lancedb-pro
+openclaw plugins info memory-graph-a2a
 ```
 
 ### Install Method 2 — git clone with manual path (Path A for development)
@@ -470,19 +470,19 @@ openclaw plugins info memory-lancedb-pro
 ```bash
 # 1. Clone into workspace
 cd /path/to/your/openclaw/workspace
-git clone -b master https://github.com/CortexReach/memory-lancedb-pro.git plugins/memory-lancedb-pro
-cd plugins/memory-lancedb-pro && npm install
+git clone -b master https://github.com/CortexReach/memory-graph-a2a.git plugins/memory-graph-a2a
+cd plugins/memory-graph-a2a && npm install
 ```
 
 Add to `openclaw.json` — the `enabled: true` and the `allow` entry are both required:
 ```json
 {
   "plugins": {
-    "load": { "paths": ["plugins/memory-lancedb-pro"] },
-    "allow": ["memory-lancedb-pro"],
-    "slots": { "memory": "memory-lancedb-pro" },
+    "load": { "paths": ["plugins/memory-graph-a2a"] },
+    "allow": ["memory-graph-a2a"],
+    "slots": { "memory": "memory-graph-a2a" },
     "entries": {
-      "memory-lancedb-pro": {
+      "memory-graph-a2a": {
         "enabled": true,
         "config": {
           "embedding": {
@@ -505,22 +505,22 @@ Validate and restart:
 ```bash
 openclaw config validate
 openclaw gateway restart
-openclaw logs --follow --plain | rg "memory-lancedb-pro"
+openclaw logs --follow --plain | rg "memory-graph-a2a"
 ```
 
 Expected log output:
-- `memory-lancedb-pro: smart extraction enabled`
-- `memory-lancedb-pro@...: plugin registered`
+- `memory-graph-a2a: smart extraction enabled`
+- `memory-graph-a2a@...: plugin registered`
 
 ### Install Method 3 — Existing deployments (Path B)
 
-Use **absolute paths** in `plugins.load.paths`. Add to `plugins.allow`. Bind memory slot: `plugins.slots.memory = "memory-lancedb-pro"`. Set `plugins.entries.memory-lancedb-pro.enabled: true`.
+Use **absolute paths** in `plugins.load.paths`. Add to `plugins.allow`. Bind memory slot: `plugins.slots.memory = "memory-graph-a2a"`. Set `plugins.entries.memory-graph-a2a.enabled: true`.
 
 Then restart and verify:
 ```bash
 openclaw config validate
 openclaw gateway restart
-openclaw logs --follow --plain | rg "memory-lancedb-pro"
+openclaw logs --follow --plain | rg "memory-graph-a2a"
 ```
 
 ### New User First-Install Checklist
@@ -529,9 +529,9 @@ After the plugin starts successfully, determine which scenario applies and run t
 
 ---
 
-**Scenario A — Coming from built-in `memory-lancedb` plugin (most common upgrade path)**
+**Scenario A — Coming from built-in `memory-graph-a2a` plugin (most common upgrade path)**
 
-The old plugin stores data in LanceDB at `~/.openclaw/memory/lancedb`. Use the migrate command:
+The old plugin stores data in Graph Memory at `~/.openclaw/memory/graph-a2a`. Use the migrate command:
 
 ```bash
 # 1. Check if old data exists and is readable
@@ -550,8 +550,8 @@ openclaw memory-pro stats
 
 If the old database is at a non-default path:
 ```bash
-openclaw memory-pro migrate check --source /path/to/old/lancedb
-openclaw memory-pro migrate run --source /path/to/old/lancedb
+openclaw memory-pro migrate check --source /path/to/old/graph-a2a
+openclaw memory-pro migrate run --source /path/to/old/graph-a2a
 ```
 
 ---
@@ -600,7 +600,7 @@ Or use `memory_store` tool directly in the agent to store individual entries one
 memory_store(text="<extracted memory>", category="fact", importance=0.8)
 ```
 
-> **Note:** Markdown-based memory files (MEMORY.md, AGENTS.md) are workspace context files, not the same as the LanceDB memory store. You only need to migrate them if you want that content searchable via `memory_recall`.
+> **Note:** Markdown-based memory files (MEMORY.md, AGENTS.md) are workspace context files, not the same as the Graph Memory memory store. You only need to migrate them if you want that content searchable via `memory_recall`.
 
 ---
 
@@ -614,15 +614,15 @@ Then trigger a conversation — `autoCapture` will start storing memories automa
 
 ---
 
-### LanceDB Version Compatibility
+### Graph Memory Version Compatibility
 
-> **No manual action required for LanceDB version changes.**
+> **No manual action required for Graph Memory version changes.**
 
-The plugin requires `@lancedb/lancedb ^0.26.2` as an npm dependency — this is installed automatically when you install or update the plugin. You do not need to manually install or upgrade LanceDB.
+The plugin requires `@graph-a2a/graph-a2a ^0.26.2` as an npm dependency — this is installed automatically when you install or update the plugin. You do not need to manually install or upgrade Graph Memory.
 
-LanceDB 0.26+ changed how numeric columns are returned (Arrow `BigInt` type for `timestamp`, `importance`, `_distance`, `_score`). The plugin handles this transparently at runtime via internal `Number(...)` coercion — no migration commands are needed when moving between LanceDB versions.
+Graph Memory 0.26+ changed how numeric columns are returned (Arrow `BigInt` type for `timestamp`, `importance`, `_distance`, `_score`). The plugin handles this transparently at runtime via internal `Number(...)` coercion — no migration commands are needed when moving between Graph Memory versions.
 
-**TL;DR:** LanceDB version compatibility is fully automatic. See the table below for when each maintenance command actually applies.
+**TL;DR:** Graph Memory version compatibility is fully automatic. See the table below for when each maintenance command actually applies.
 
 ### Upgrading plugin code vs. data
 
@@ -630,15 +630,15 @@ LanceDB 0.26+ changed how numeric columns are returned (Arrow `BigInt` type for 
 
 | Command | When to use |
 |---------|-------------|
-| `openclaw plugins update memory-lancedb-pro` | Update **plugin code** after a new release (npm-installed only) |
+| `openclaw plugins update memory-graph-a2a` | Update **plugin code** after a new release (npm-installed only) |
 | `openclaw plugins update --all` | Update all npm-installed plugins at once |
-| `openclaw memory-pro upgrade` | Enrich **old memory-lancedb-pro entries** that predate the smart-memory schema (missing L0/L1/L2 metadata + 6-category system) — NOT related to LanceDB version |
-| `openclaw memory-pro migrate` | One-time migration from the separate `memory-lancedb` built-in plugin → Pro |
+| `openclaw memory-pro upgrade` | Enrich **old memory-graph-a2a entries** that predate the smart-memory schema (missing L0/L1/L2 metadata + 6-category system) — NOT related to Graph Memory version |
+| `openclaw memory-pro migrate` | One-time migration from the separate `memory-graph-a2a` built-in plugin → Pro |
 | `openclaw memory-pro reembed` | Rebuild all embeddings after switching embedding model or provider |
 
 **When do you need `memory-pro upgrade`?**
 
-Run it if you installed memory-lancedb-pro before the smart-memory format was introduced (i.e., entries are missing `memory_category` in their metadata). Signs you need it:
+Run it if you installed memory-graph-a2a before the smart-memory format was introduced (i.e., entries are missing `memory_category` in their metadata). Signs you need it:
 - `memory_recall` returns results but without meaningful categories
 - `memory-pro list --json` shows entries with no `l0_abstract` / `l1_overview` fields
 
@@ -670,10 +670,10 @@ openclaw memory-pro upgrade --scope global    # limit to one scope
 
 ```bash
 openclaw plugins list                           # show all discovered plugins
-openclaw plugins info memory-lancedb-pro        # show plugin status and config
-openclaw plugins enable memory-lancedb-pro      # enable a disabled plugin
-openclaw plugins disable memory-lancedb-pro     # disable without removing
-openclaw plugins update memory-lancedb-pro      # update npm-installed plugin
+openclaw plugins info memory-graph-a2a        # show plugin status and config
+openclaw plugins enable memory-graph-a2a      # enable a disabled plugin
+openclaw plugins disable memory-graph-a2a     # disable without removing
+openclaw plugins update memory-graph-a2a      # update npm-installed plugin
 openclaw plugins update --all                   # update all npm plugins
 openclaw plugins doctor                         # health check for all plugins
 openclaw plugins install ./path/to/plugin       # install local plugin (copies + enables)
@@ -690,7 +690,7 @@ openclaw plugins install -l ./path/to/plugin    # symlink for dev (no copy)
 ### Easy-to-Miss Setup Steps
 
 1. **Gateway restart required after any change**: After installing, enabling, disabling, updating, or changing config in `openclaw.json`, you MUST run `openclaw gateway restart` — changes are NOT hot-reloaded.
-2. **Workspace plugins are DISABLED by default**: After git clone, you MUST add `plugins.allow: ["memory-lancedb-pro"]` AND `plugins.entries.memory-lancedb-pro.enabled: true` — without these the plugin silently does not load.
+2. **Workspace plugins are DISABLED by default**: After git clone, you MUST add `plugins.allow: ["memory-graph-a2a"]` AND `plugins.entries.memory-graph-a2a.enabled: true` — without these the plugin silently does not load.
 3. **Env vars in gateway process**: `${OPENAI_API_KEY}` requires env vars set in the *OpenClaw Gateway service* process—not just your shell.
 4. **Absolute vs. relative paths**: For existing deployments, always use absolute paths in `plugins.load.paths`.
 5. **`baseURL` not `baseUrl`**: The embedding (and llm) config field is `baseURL` (capital URL), NOT `baseUrl`. Using the wrong casing causes a schema validation error: "must NOT have additional properties". Also note the required `/v1` suffix: `http://localhost:11434/v1`, not `http://localhost:11434`. Do not confuse with `agents.defaults.memorySearch.remote.baseUrl` which uses a different casing.
@@ -700,7 +700,7 @@ openclaw plugins install -l ./path/to/plugin    # symlink for dev (no copy)
 9. **Scope isolation**: Multi-scope requires explicit `scopes.agentAccess` mapping — without it, agents only see `global` scope.
 10. **Session memory hook**: Fires on `/new` command — test with an actual `/new` invocation.
 11. **Reranker credentials**: When switching providers, update both `rerankApiKey` AND `rerankEndpoint`.
-12. **Config check before assuming defaults**: Run `openclaw config get plugins.entries.memory-lancedb-pro` to verify what's actually loaded.
+12. **Config check before assuming defaults**: Run `openclaw config get plugins.entries.memory-graph-a2a` to verify what's actually loaded.
 13. **Custom config/state paths via env vars**: OpenClaw respects the following environment variables for custom paths:
     - `OPENCLAW_HOME` — sets the root config/data directory (default: `~/.openclaw/`)
     - `OPENCLAW_CONFIG_PATH` — absolute path to `openclaw.json` override
@@ -711,7 +711,7 @@ openclaw plugins install -l ./path/to/plugin    # symlink for dev (no copy)
 ```bash
 openclaw doctor                                 # full health check (recommended)
 openclaw config validate                        # config schema check only
-openclaw plugins info memory-lancedb-pro        # plugin status
+openclaw plugins info memory-graph-a2a        # plugin status
 openclaw plugins doctor                         # plugin-specific health
 openclaw hooks list --json | grep memory        # confirm hooks registered
 openclaw memory-pro stats
@@ -733,7 +733,7 @@ Full smoke test checklist:
 **Config validation tool** (from [CortexReach/toolbox](https://github.com/CortexReach/toolbox)):
 ```bash
 # Download once
-curl -fsSL https://raw.githubusercontent.com/CortexReach/toolbox/main/memory-lancedb-pro-setup/scripts/config-validate.mjs -o config-validate.mjs
+curl -fsSL https://raw.githubusercontent.com/CortexReach/toolbox/main/memory-graph-a2a-setup/scripts/config-validate.mjs -o config-validate.mjs
 # Run against your openclaw.json
 node config-validate.mjs
 # Or validate a specific config snippet
@@ -745,7 +745,7 @@ Exit code 0 = pass/warn, 1 = errors found.
 |---------------|-----------|-----|
 | `must NOT have additional properties` + `config.embedding` | Field name typo in embedding config (e.g. `baseUrl` instead of `baseURL`) | Check all field names against the schema table below — field names are case-sensitive |
 | `must NOT have additional properties` (top-level config) | Unknown top-level field in plugin config | Remove or correct the field |
-| `memory-lancedb-pro: plugin not found` / plugin silently not loading | `plugins.allow` missing (git-clone install) or `enabled: false` | Add `plugins.allow: ["memory-lancedb-pro"]` and set `enabled: true`, then restart |
+| `memory-graph-a2a: plugin not found` / plugin silently not loading | `plugins.allow` missing (git-clone install) or `enabled: false` | Add `plugins.allow: ["memory-graph-a2a"]` and set `enabled: true`, then restart |
 | `Unknown plugin id` validation error | Plugin referenced in `entries`/`slots` before it's discoverable | Install/register the plugin first, then add config references |
 | `${OPENAI_API_KEY}` not expanding / auth errors despite env var set | Env var not set in the **gateway process** environment | Set the env var in the service that runs OpenClaw gateway, not just your shell |
 | Hooks (`before_agent_start`, `agent_end`) not firing | Gateway not restarted after install/config change | Run `openclaw gateway restart` |
@@ -791,7 +791,7 @@ Uses Jina for both embedding and reranking — best retrieval quality:
     "taskPassage": "retrieval.passage",
     "normalized": true
   },
-  "dbPath": "~/.openclaw/memory/lancedb-pro",
+  "dbPath": "~/.openclaw/memory/graph-a2a-pro",
   "autoCapture": true,
   "autoRecall": true,
   "captureAssistant": false,
@@ -846,7 +846,7 @@ Uses Jina for both embedding and reranking — best retrieval quality:
     "taskPassage": "retrieval.passage",
     "normalized": true
   },
-  "dbPath": "~/.openclaw/memory/lancedb-pro",
+  "dbPath": "~/.openclaw/memory/graph-a2a-pro",
   "autoCapture": true,
   "autoRecall": true,
   "captureAssistant": false,
@@ -891,7 +891,7 @@ Uses Jina for both embedding and reranking — best retrieval quality:
   },
   "sessionStrategy": "none",
   "memoryReflection": {
-    "storeToLanceDB": true,
+    "storeToGraph Memory": true,
     "injectMode": "inheritance+derived",
     "agentId": "memory-distiller",
     "messageCount": 120,
@@ -945,7 +945,7 @@ Uses Jina for both embedding and reranking — best retrieval quality:
 ### Top-Level
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `dbPath` | string | `~/.openclaw/memory/lancedb-pro` | LanceDB data directory |
+| `dbPath` | string | `~/.openclaw/memory/graph-a2a-pro` | Graph Memory data directory |
 | `autoCapture` | boolean | true | Auto-extract memories after agent replies (via `agent_end` hook) |
 | `autoRecall` | boolean | **false** (schema default) | Inject memories before agent processing — **set to true explicitly** |
 | `captureAssistant` | boolean | false | Include assistant messages in extraction |
@@ -1002,7 +1002,7 @@ Use `sessionStrategy` (top-level field) to configure the session pipeline:
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `storeToLanceDB` | boolean | true | Persist reflections to LanceDB |
+| `storeToGraph Memory` | boolean | true | Persist reflections to Graph Memory |
 | `writeLegacyCombined` | boolean | true | Also write legacy combined row |
 | `injectMode` | string | `inheritance+derived` | `inheritance-only` / `inheritance+derived` |
 | `agentId` | string | — | Dedicated reflection agent (e.g. `"memory-distiller"`) |
@@ -1334,7 +1334,7 @@ openclaw memory-pro import memories.json [--scope global] [--dry-run]
 openclaw memory-pro reembed --source-db /path/to/old-db [--batch-size 32] [--skip-existing]
 openclaw memory-pro upgrade [--dry-run] [--batch-size 10] [--no-llm] [--limit N] [--scope SCOPE]
 
-# Migration from built-in memory-lancedb
+# Migration from built-in memory-graph-a2a
 openclaw memory-pro migrate check [--source /path]
 openclaw memory-pro migrate run [--source /path] [--dry-run] [--skip-existing]
 openclaw memory-pro migrate verify [--source /path]
@@ -1371,14 +1371,14 @@ Every pitfall/lesson learned → IMMEDIATELY store TWO memories:
 - Principle layer: Decision principle with trigger and action (category: decision, importance ≥ 0.85)
 After each store, immediately `memory_recall` to verify retrieval.
 
-## Rule 2 — LanceDB 卫生
+## Rule 2 — Graph Memory 卫生
 Entries must be short and atomic (< 500 chars). No raw conversation summaries or duplicates.
 
 ## Rule 3 — Recall before retry
 On ANY tool failure, ALWAYS `memory_recall` with relevant keywords BEFORE retrying.
 
 ## Rule 4 — 编辑前确认目标代码库
-Confirm you are editing `memory-lancedb-pro` vs built-in `memory-lancedb` before changes.
+Confirm you are editing `memory-graph-a2a` vs built-in `memory-graph-a2a` before changes.
 
 ## Rule 5 — 插件代码变更必须清 jiti 缓存
 After modifying `.ts` files under `plugins/`, MUST run `rm -rf /tmp/jiti/` BEFORE `openclaw gateway restart`.
@@ -1421,7 +1421,7 @@ When user sends `/remember <content>`:
 {
   "plugins": {
     "entries": {
-      "memory-lancedb-pro": {
+      "memory-graph-a2a": {
         "config": {
           "embedding": {
             "provider": "openai-compatible",
@@ -1472,7 +1472,7 @@ echo "✅ Plan E (OpenAI-Compatible/silra.cn) 已添加到 SKILL.md"
 {
   "plugins": {
     "entries": {
-      "memory-lancedb-pro": {
+      "memory-graph-a2a": {
         "config": {
           "embedding": {
             "provider": "openai-compatible",

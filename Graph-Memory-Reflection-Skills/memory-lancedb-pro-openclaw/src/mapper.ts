@@ -1,7 +1,7 @@
 /**
  * Memory to Graph Mapper
  * 
- * Maps memory-lancedb-pro records to Neo4j graph nodes and LanceDB vectors.
+ * Maps memory-graph-a2a records to Neo4j graph nodes and Graph Memory vectors.
  */
 
 import { GraphClient, Node, Relationship, VectorRecord } from './graph-client';

@@ -1,7 +1,7 @@
 /**
  * Graph Retriever
  * 
- * Retrieves nodes from Neo4j graph and LanceDB vector storage.
+ * Retrieves nodes from Neo4j graph and Graph Memory vector storage.
  */
 
 import { GraphClient, Node, VectorSearchResult } from './graph-client';

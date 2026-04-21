@@ -1,5 +1,5 @@
 /**
- * Silra.cn API Provider for memory-lancedb-pro
+ * Silra.cn API Provider for memory-graph-a2a
  * 
  * Provides OpenAI-compatible embedding and LLM services for China mainland users.
  * 

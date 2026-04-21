@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Silra.cn Provider Configuration Schema",
-  "description": "Configuration schema for Silra.cn API provider in memory-lancedb-pro",
+  "description": "Configuration schema for Silra.cn API provider in memory-graph-a2a",
   "type": "object",
   "properties": {
     "embedding": {

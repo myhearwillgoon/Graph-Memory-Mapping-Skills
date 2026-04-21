@@ -1,4 +1,4 @@
-# 📦 PR Preparation Package - memory-lancedb-pro Silra.cn Support
+# 📦 PR Preparation Package - memory-graph-a2a Silra.cn Support
 
 **Status**: ✅ Ready for Review  
 **Date**: 2026-04-14  
@@ -8,7 +8,7 @@
 
 ## 📁 Package Contents
 
-This folder contains all materials needed to submit a PR to memory-lancedb-pro:
+This folder contains all materials needed to submit a PR to memory-graph-a2a:
 
 | File | Purpose | Status |
 |------|---------|--------|
@@ -28,7 +28,7 @@ This folder contains all materials needed to submit a PR to memory-lancedb-pro:
 
 **Type**: Feature Addition
 
-**Impact**: Enables Chinese users to use memory-lancedb-pro with local APIs
+**Impact**: Enables Chinese users to use memory-graph-a2a with local APIs
 
 **Changes**:
 - ✅ New Silra embedding provider (OpenAI-compatible)
@@ -68,7 +68,7 @@ Before submitting, test the implementation:
 export SILRA_API_KEY="your-test-key"
 
 # Copy implementation to test project
-cp src-providers-silra.ts /path/to/memory-lancedb-pro/src/providers/silra.ts
+cp src-providers-silra.ts /path/to/memory-graph-a2a/src/providers/silra.ts
 
 # Run tests
 npm test
@@ -217,7 +217,7 @@ If you encounter issues during submission:
 
 ## 📞 Contact
 
-- **GitHub**: https://github.com/CortexReach/memory-lancedb-pro
+- **GitHub**: https://github.com/CortexReach/memory-graph-a2a
 - **Discord**: OpenClaw Community
 - **Documentation**: https://docs.silra.cn
 
@@ -225,7 +225,7 @@ If you encounter issues during submission:
 
 **Good luck with your PR! 🚀**
 
-This contribution will help thousands of Chinese users access memory-lancedb-pro with better performance and reliability!
+This contribution will help thousands of Chinese users access memory-graph-a2a with better performance and reliability!
 
 ---
 

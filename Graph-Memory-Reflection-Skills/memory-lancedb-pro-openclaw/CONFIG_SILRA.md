@@ -2,12 +2,12 @@
 
 ## Overview
 
-Silra.cn provides OpenAI-compatible APIs for users in China mainland. This configuration guide shows how to integrate Silra.cn with memory-lancedb-pro.
+Silra.cn provides OpenAI-compatible APIs for users in China mainland. This configuration guide shows how to integrate Silra.cn with memory-graph-a2a.
 
 ## Prerequisites
 
 1. **Get API Key**: Sign up at https://silra.cn/console/api-key
-2. **Install memory-lancedb-pro**: Follow the main installation guide
+2. **Install memory-graph-a2a**: Follow the main installation guide
 3. **Verify Connectivity**: Test API access from your network
 
 ## Configuration Plans

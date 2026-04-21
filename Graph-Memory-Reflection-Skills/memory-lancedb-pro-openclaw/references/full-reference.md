@@ -1,8 +1,8 @@
-# memory-lancedb-pro Full Technical Reference
+# memory-graph-a2a Full Technical Reference
 
 ## Database Schema
 
-LanceDB table `memories`:
+Graph Memory table `memories`:
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -293,14 +293,14 @@ effectiveHL = baseHalfLife × exp(importance_coefficient × importance)
 
 ## Package Information
 
-- **Name:** memory-lancedb-pro
+- **Name:** memory-graph-a2a
 - **Version:** 1.1.0-beta.8
 - **Type:** ES module
 - **License:** MIT
 - **Author:** win4r
 
 ### Core Dependencies
-- `@lancedb/lancedb`: ^0.26.2
+- `@graph-a2a/graph-a2a`: ^0.26.2
 - `@sinclair/typebox`: 0.34.48
 - `openai`: ^6.21.0
 

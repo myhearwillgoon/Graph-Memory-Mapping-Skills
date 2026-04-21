@@ -12,7 +12,7 @@ describe('GraphClient', () => {
     neo4jUri: process.env.NEO4J_URI || 'bolt://localhost:7687',
     neo4jUser: process.env.NEO4J_USER || 'neo4j',
     neo4jPassword: process.env.NEO4J_PASSWORD || 'password',
-    lanceDbPath: './test-lancedb',
+    neo4jUri: './test-graph-a2a',
   };
 
   before(() => {

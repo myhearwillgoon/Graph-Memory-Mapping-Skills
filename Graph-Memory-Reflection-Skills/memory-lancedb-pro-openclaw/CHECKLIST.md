@@ -1,7 +1,7 @@
 # ✅ Pre-Submission Checklist
 
 **PR**: Add Silra.cn Provider for China Mainland Users  
-**Target**: https://github.com/CortexReach/memory-lancedb-pro
+**Target**: https://github.com/CortexReach/memory-graph-a2a
 
 ---
 
@@ -63,7 +63,7 @@
 Ensure these files are ready:
 
 ```
-pr-prep/memory-lancedb-pro-silra/
+pr-prep/memory-graph-a2a-silra/
 ├── PACKAGE_SUMMARY.md          ✅ Overview
 ├── PR_DESCRIPTION.md            ✅ PR description
 ├── PR_INSTRUCTIONS.md           ✅ Submission guide

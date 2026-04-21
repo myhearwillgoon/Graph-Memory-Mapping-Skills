@@ -1,4 +1,4 @@
-# PR Instructions - memory-lancedb-pro Silra.cn Support
+# PR Instructions - memory-graph-a2a Silra.cn Support
 
 ## 📋 Pre-Submission Checklist
 
@@ -39,23 +39,23 @@ Before submitting your PR, ensure all items are complete:
 
 ### Step 1: Fork the Repository
 
-1. Go to https://github.com/CortexReach/memory-lancedb-pro
+1. Go to https://github.com/CortexReach/memory-graph-a2a
 2. Click "Fork" button (top right)
 3. Wait for fork to complete
-4. Your fork: `https://github.com/YOUR_USERNAME/memory-lancedb-pro`
+4. Your fork: `https://github.com/YOUR_USERNAME/memory-graph-a2a`
 
 ### Step 2: Clone Your Fork
 
 ```bash
 cd /mnt/d/OneDrive\ -\ Imperial\ College\ London/OpenClaw-Shared/
-git clone git@github.com:YOUR_USERNAME/memory-lancedb-pro.git
-cd memory-lancedb-pro
+git clone git@github.com:YOUR_USERNAME/memory-graph-a2a.git
+cd memory-graph-a2a
 ```
 
 ### Step 3: Add Upstream Remote
 
 ```bash
-git remote add upstream https://github.com/CortexReach/memory-lancedb-pro.git
+git remote add upstream https://github.com/CortexReach/memory-graph-a2a.git
 git fetch upstream
 ```
 
@@ -69,11 +69,11 @@ git checkout -b feat/silra-china-provider
 
 ```bash
 # Copy provider implementation
-cp /mnt/d/OneDrive\ -\ Imperial\ College\ London/OpenClaw-Shared/pr-prep/memory-lancedb-pro-silra/src-providers-silra.ts \
+cp /mnt/d/OneDrive\ -\ Imperial\ College\ London/OpenClaw-Shared/pr-prep/memory-graph-a2a-silra/src-providers-silra.ts \
    src/providers/silra.ts
 
 # Copy documentation
-cp /mnt/d/OneDrive\ -\ Imperial\ College\ London/OpenClaw-Shared/pr-prep/memory-lancedb-pro-silra/CONFIG_SILRA.md \
+cp /mnt/d/OneDrive\ -\ Imperial\ College\ London/OpenClaw-Shared/pr-prep/memory-graph-a2a-silra/CONFIG_SILRA.md \
    docs/providers/silra.md
 
 # Create docs directory if needed
@@ -179,11 +179,11 @@ git push origin feat/silra-china-provider
 
 ### Step 11: Create Pull Request
 
-1. Go to your fork: `https://github.com/YOUR_USERNAME/memory-lancedb-pro`
+1. Go to your fork: `https://github.com/YOUR_USERNAME/memory-graph-a2a`
 2. Click "Pull requests" → "New pull request"
-3. Base repository: `CortexReach/memory-lancedb-pro`
+3. Base repository: `CortexReach/memory-graph-a2a`
 4. Base branch: `main`
-5. Head repository: `YOUR_USERNAME/memory-lancedb-pro`
+5. Head repository: `YOUR_USERNAME/memory-graph-a2a`
 6. Compare branch: `feat/silra-china-provider`
 7. Click "Create pull request"
 
@@ -295,7 +295,7 @@ Don't worry! Common reasons:
 
 **Good luck! 🚀**
 
-This PR will help thousands of Chinese users access memory-lancedb-pro with better performance!
+This PR will help thousands of Chinese users access memory-graph-a2a with better performance!
 
 ---
 
