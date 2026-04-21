@@ -1,29 +1,114 @@
 # Graph Memory Mapping Skills
 
-> **Graph-Enhanced Memory System** — Neo4j + LanceDB hybrid retrieval for multi-agent collaboration
+> **Graph-Enhanced Agent-to-Agent Communication** — Neo4j-powered knowledge graph for multi-agent collaboration
 
 **Version**: 1.0.0  
-**Branch**: `feat/graph-memory`  
-**Status**: 🚧 In Development (Phase 1: Memory Graph Pro)
+**Status**: ✅ Phase 1 Complete (Memory Graph Pro)  
+**Next**: Phase 2 - OpenClaw Coordinator Integration
 
 ---
 
-## 🎯 Overview
+## 🎯 What is Graph Memory Mapping?
 
-**Graph Memory Mapping** extends traditional vector-based memory with **knowledge graph capabilities**, enabling:
+**Graph Memory Mapping** transforms how AI agents collaborate by using a **centralized knowledge graph** as the source of truth for inter-agent communication.
 
-- **Multi-dimensional relationship mapping** — Connect memories via semantic, temporal, and causal relationships
-- **Graph-based reasoning** — Discover hidden patterns through path traversal and graph inference
-- **Hybrid retrieval** — Combine vector similarity + graph traversal for comprehensive results
-- **Event-driven architecture** — React to memory changes in real-time
+Instead of agents communicating through fragile point-to-point RPC calls, all agents read from and write to a **shared graph memory layer**. This enables:
 
-Built for **multi-agent collaboration** where agents share a unified graph memory layer.
+- **Persistent Context** — Agents share long-term memory, not just transient messages
+- **Graph-Based Reasoning** — Discover hidden relationships across agent conversations
+- **Event-Driven Coordination** — Agents react to graph changes, not just direct calls
+- **Multi-Hop Inference** — Chain reasoning across multiple agents' knowledge
 
 ---
 
-## 🏗️ Architecture
+## 🧠 Graph Reasoning Capabilities
 
-### System Architecture
+### Core Reasoning Patterns
+
+| Pattern | Description | Use Case |
+|---------|-------------|----------|
+| **Path Traversal** | Find connections between entities | "How is Project A related to Client B?" |
+| **Pattern Matching** | Detect recurring structures | "Identify all blocked tasks waiting on external deps" |
+| **Temporal Reasoning** | Track changes over time | "Show evolution of requirement X" |
+| **Causal Inference** | Trace cause-effect chains | "Why did deployment fail?" |
+| **Semantic Similarity** | Combine vector + graph search | "Find similar past incidents" |
+
+### Example: Multi-Agent Problem Solving
+
+```
+Scenario: User asks "Why did the CI pipeline fail?"
+
+1. Crawler Agent → Detects CI failure event → Writes to graph
+2. Parser Agent → Extracts error logs → Links to commit/graph
+3. Analyzer Agent → Queries graph for related changes
+   - Finds: Recent dependency update (from Git agent)
+   - Finds: Similar failure last week (from Memory agent)
+   - Infers: Causal relationship via graph path
+4. Knowledge Agent → Stores root cause analysis
+5. Delivery Agent → Pushes diagnosis to user
+
+All coordination happens through graph events, not RPC!
+```
+
+---
+
+## 🔄 A2A Communication Workflow
+
+### Traditional A2A (Point-to-Point)
+
+```
+┌─────────┐     ┌─────────┐     ┌─────────┐
+│ Agent A │────▶│ Agent B │────▶│ Agent C │
+└─────────┘     └─────────┘     └─────────┘
+   │               │               │
+   ▼               ▼               ▼
+ Direct calls    Direct calls    Direct calls
+   │               │               │
+   ▼               ▼               ▼
+ Tight coupling  Brittle chain   Hard to scale
+```
+
+**Problems**:
+- ❌ Tight coupling between agents
+- ❌ Communication chain breaks if one agent fails
+- ❌ No persistent context across conversations
+- ❌ Hard to add new agents
+
+---
+
+### Graph-Enabled A2A (Event-Driven)
+
+```
+                        ┌─────────────────┐
+                        │   Graph Memory  │
+                        │   (Neo4j)       │
+                        └────────┬────────┘
+                                 │
+              ┌──────────────────┼──────────────────┐
+              │                  │                  │
+              ▼                  ▼                  ▼
+        ┌─────────┐        ┌─────────┐        ┌─────────┐
+        │Crawler  │        │Analyzer │        │Delivery │
+        │Agent    │        │Agent    │        │Agent    │
+        └────┬────┘        └────┬────┘        └────┬────┘
+             │                  │                  │
+             │  Write Events    │  Read/Query      │  Subscribe
+             │                  │                  │
+             └──────────────────┴──────────────────┘
+                        Graph Events
+```
+
+**Benefits**:
+- ✅ **Loose coupling** — Agents only know the graph schema
+- ✅ **Fault tolerance** — One agent failure doesn't break chain
+- ✅ **Persistent context** — Graph retains full conversation history
+- ✅ **Easy scaling** — Add new agents by subscribing to events
+
+---
+
+## 🏗️ System Architecture
+
+### High-Level Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -35,183 +120,87 @@ Built for **multi-agent collaboration** where agents share a unified graph memor
 ┌─────────────────────────────────────────────────────────────┐
 │              OpenClaw Gateway Layer                          │
 │  ┌─────────────────────────────────────────────────────┐   │
-│  │  Coordinator Agent (OpenClaw Native)                │   │
-│  │  - Channel Management                                │   │
-│  │  - Task Dispatch                                     │   │
-│  │  - Health Monitoring                                 │   │
+│  │  Coordinator Agent                                  │   │
+│  │  - Routes user messages to appropriate agent        │   │
+│  │  - Monitors agent health                            │   │
+│  │  - Manages conversation context via graph           │   │
 │  └─────────────────────────────────────────────────────┘   │
 └──────────────────────────┬──────────────────────────────────┘
-                           │ RPC / Event
+                           │ Graph Events
                            ▼
 ┌─────────────────────────────────────────────────────────────┐
 │              Hermes Agent Layer                              │
 │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐      │
-│  │ Crawler  │ │ Parser   │ │ Analyzer │ │ Delivery │      │
-│  │ Skill    │ │ Skill    │ │ Skill    │ │ Skill    │      │
+│  │ Crawler  │ │ Parser   │ │ Analyzer │ │Delivery  │      │
+│  │ (Input)  │ │(Extract) │ │(Reason)  │ │ (Output) │      │
 │  └────┬─────┘ └────┬─────┘ └────┬─────┘ └────┬─────┘      │
+│       │            │            │            │             │
 │       └────────────┴────────────┴────────────┘             │
 │                         │                                   │
 │                         ▼                                   │
 │              ┌─────────────────────┐                       │
 │              │   GraphClient SDK   │                       │
+│              │   (Neo4j Driver)    │                       │
 │              └─────────────────────┘                       │
 └──────────────────────────┬──────────────────────────────────┘
                            │
                            ▼
 ┌─────────────────────────────────────────────────────────────┐
 │              Graph Memory Layer                              │
-│  ┌─────────────────┐  ┌─────────────────┐                  │
-│  │  Neo4j          │  │  LanceDB        │                  │
-│  │  (Knowledge    │  │  (Vector        │                  │
-│  │   Graph)        │  │   Retrieval)    │                  │
-│  └─────────────────┘  └─────────────────┘                  │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │  Neo4j Knowledge Graph                              │   │
+│  │  - Nodes: Entities, Concepts, Events                │   │
+│  │  - Relationships: CAUSES, RELATES_TO, OCCURS_AFTER  │   │
+│  │  - Properties: Timestamps, Confidence, Source       │   │
+│  └─────────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Architecture Principles
+---
 
-| Principle | Description |
-|-----------|-------------|
-| **Graph-Centric** | All persistent state written to graph |
-| **Hybrid Communication** | Real-time via RPC, state sync via graph |
-| **Event-Driven** | Graph updates trigger events |
-| **Modular** | Each Skill has single responsibility |
-| **Extensible** | Add Skills without modifying core |
+## 📦 Component Breakdown
+
+### Phase 1: Memory Graph Pro ✅ (Complete)
+
+**Location**: `Graph-Memory-Reflection-Skills/memory-lancedb-pro-openclaw/`
+
+| Module | File | Function |
+|--------|------|----------|
+| **Graph Client** | `src/graph-client.ts` | Neo4j connection + query execution |
+| **Mapper** | `src/mapper.ts` | Convert memory → graph nodes/relationships |
+| **Retriever** | `src/retriever.ts` | Graph traversal + pattern matching |
+| **Fusion** | `src/fusion.ts` | Combine vector + graph results |
+| **Reasoning** | `src/reasoning.ts` | Path inference + causal analysis |
+| **Events** | `src/events.ts` | Event emission on graph changes |
+
+**Key Features**:
+- ✅ Neo4j driver integration
+- ✅ Hybrid search (vector + graph)
+- ✅ Event-driven notifications
+- ✅ Graph-based reasoning engine
 
 ---
 
-## 📋 Project Scope
+### Phase 2: OpenClaw Coordinator 🚧 (Upcoming)
 
-### Component Breakdown
+**Purpose**: Central orchestration layer for multi-agent workflows
 
-| Component | GitHub Repo | Form | Priority |
-|-----------|-------------|------|----------|
-| **Main Project** | `graph-multi-agent-system` | End-to-End Repo | P0 |
-| **Memory Graph Pro** | `memory-graph-pro-skill` | OpenClaw Skill | P0 |
-| **OpenClaw Coordinator** | `openclaw-coordinator-skill` | OpenClaw Skill | P0 |
-| **Hermes Skills** | `hermes-graph-skills` | Hermes Skill Package | P1 |
-
-### Development Phases
-
-| Phase | Content | Duration | Output |
-|-------|---------|----------|--------|
-| **Phase 1** | Memory Graph Pro | 2-3 weeks | Skill installable |
-| **Phase 2** | OpenClaw Coordinator | 1-2 weeks | Skill installable |
-| **Phase 3** | Hermes Skills | 2 weeks | Skill package |
-| **Phase 4** | Integration & Release | 1 week | GitHub Release |
+**Responsibilities**:
+- Channel management (Feishu, WeChat, Email)
+- Task dispatching to appropriate agents
+- Health monitoring + auto-recovery
+- Graph context management
 
 ---
 
-## 🎯 Goals & Success Metrics
+### Phase 3: Hermes Skills 🚧 (Upcoming)
 
-### Core Goals
-
-1. **Graph-Driven Memory** — Multi-dimensional relationship mapping + graph inference
-2. **Hybrid Communication** — Graph (stable) + RPC (fast)
-3. **Active Push** — Proactively provide insights based on graph reasoning
-4. **One-Click Deployment** — Docker Compose setup
-
-### Success Metrics
-
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| **Retrieval Accuracy** | > 85% | User feedback / CTR |
-| **Association Discovery** | > 5 per query | Graph inference results |
-| **Active Push** | > 3 per day | Push frequency |
-| **Push Accuracy** | > 80% | User approval rate |
-| **GitHub Stars** | 100+ (3 months) | GitHub stats |
-| **Skill Installs** | 50+ users | Install stats |
-
----
-
-## 📦 Graph Schema
-
-### Node Types
-
-| Label | Properties | Description |
-|-------|------------|-------------|
-| **User** | id, name, timezone, createdAt | User entity |
-| **Diary** | id, date, content, mood, tags | Daily journal |
-| **Meeting** | id, title, startTime, decisions | Meeting records |
-| **Behavior** | id, type, timestamp, details | User actions |
-| **Knowledge** | id, title, category, confidence | Knowledge nodes |
-
-### Relationship Types
-
-| Relationship | Source → Target | Description |
-|--------------|-----------------|-------------|
-| **HAS_EXPERIENCE** | User → Diary | User has diary entries |
-| **ATTENDED_MEETING** | User → Meeting | User attended meeting |
-| **PERFORMED_ACTION** | User → Behavior | User performed action |
-| **LEARNED_KNOWLEDGE** | User → Knowledge | User learned knowledge |
-| **SIMILAR_TO** | Diary → Diary | Diary similarity (vector) |
-
----
-
-## 🔧 Core Components
-
-### GraphClient SDK
-
-```typescript
-class GraphClient {
-  // Neo4j Operations
-  async query(cypher: string, params?: any): Promise<any>;
-  async write(node: Node, relationships?: Relationship[]): Promise<void>;
-  
-  // LanceDB Operations
-  async search(query: string, topK?: number): Promise<VectorResult[]>;
-  async insert(embedding: number[], metadata: any): Promise<void>;
-  
-  // Event Subscription
-  subscribe(eventType: string, handler: EventHandler): void;
-}
-```
-
-### Example Queries
-
-```cypher
-// Query 1: User's last 7 days diaries
-MATCH (u:User {id: $userId})-[:HAS_EXPERIENCE]->(d:Diary)
-WHERE d.date >= date() - duration({days: 7})
-RETURN d ORDER BY d.date DESC;
-
-// Query 2: Path Reasoning (Why low efficiency?)
-MATCH path = (u:User)-[*1..3]->(issue)
-WHERE issue:HealthRecord OR issue:Meeting
-RETURN path LIMIT 10;
-```
-
----
-
-## 📁 Project Structure
-
-```
-memory-lancedb-pro-openclaw/
-├── src/
-│   ├── graph-client.ts        # Neo4j + LanceDB SDK
-│   ├── mapper.ts              # Memory → Graph mapping
-│   ├── retriever.ts           # Graph retrieval engine
-│   ├── fusion.ts              # Vector + Graph fusion
-│   ├── reasoning.ts           # Graph inference engine
-│   ├── events.ts              # Event notification system
-│   ├── embedder.ts            # Text embedding (reused)
-│   ├── chunker.ts             # Document chunking (reused)
-│   └── llm-client.ts          # LLM client (reused)
-├── tests/
-│   ├── graph-client.test.ts
-│   ├── mapper.test.ts
-│   ├── retriever.test.ts
-│   ├── fusion.test.ts
-│   └── events.test.ts
-├── docs/
-│   └── schema.md              # Graph schema documentation
-├── README.md                  # This file
-├── SKILL.md                   # OpenClaw skill definition
-├── PR_DESCRIPTION.md          # PR template
-├── PR_INSTRUCTIONS.md         # Contribution guide
-├── CHECKLIST.md               # Pre-commit checklist
-└── CONFIG_SILRA.md            # China API configuration
-```
+**Agent Portfolio**:
+1. **Crawler** — Input from channels, file watching
+2. **Parser** — Extract structured data from raw input
+3. **Analyzer** — Graph-based reasoning + inference
+4. **Knowledge** — Long-term memory + caching
+5. **Delivery** — Output formatting + push notifications
 
 ---
 
@@ -219,10 +208,14 @@ memory-lancedb-pro-openclaw/
 
 ### Prerequisites
 
-- **Node.js** 18+
-- **Neo4j** 5.0+ (Docker or local)
-- **LanceDB** 0.5+
-- **OpenClaw** Gateway running
+```bash
+# Node.js 18+
+node --version
+
+# Neo4j 5.x (local or cloud)
+# Docker (optional, for containerized deployment)
+docker --version
+```
 
 ### Installation
 
@@ -234,192 +227,170 @@ cd Graph-Memory-Mapping-Skills
 # Install dependencies
 npm install
 
-# Start Neo4j (Docker)
-docker-compose up -d neo4j
-
-# Run tests
-npm test
+# Configure Neo4j connection
+cp .env.example .env
+# Edit .env with your Neo4j credentials
 ```
 
-### Configuration
+### Usage Example
 
-See `CONFIG_SILRA.md` for China API provider setup (Silra.cn, etc.)
+```typescript
+import { GraphClient } from './src/graph-client';
+import { MemoryMapper } from './src/mapper';
 
----
+// Initialize graph client
+const graph = new GraphClient({
+  url: 'bolt://localhost:7687',
+  username: 'neo4j',
+  password: 'your-password'
+});
 
-## 📊 Current Progress
+// Map a memory to graph
+const mapper = new MemoryMapper(graph);
+await mapper.mapMemory({
+  id: 'mem-001',
+  content: 'User asked about CI failure',
+  entities: ['CI', 'Pipeline', 'Error'],
+  relationships: [{ from: 'User', to: 'CI', type: 'ASKED_ABOUT' }]
+});
 
-**Last Updated**: 2026-04-21
-
-### Overall Status
-
-| Component | Progress | Status |
-|-----------|----------|--------|
-| **Memory Graph Pro** | 100% | ✅ Complete |
-| **OpenClaw Coordinator** | In Progress | 🟡 Developing |
-| **Hermes Skills** | In Progress | 🟡 Developing |
-| **Integration & Release** | Pending | ⏳ Up Next |
-
----
-
-### Phase 1: Memory Graph Pro (✅ 100% Complete)
-
-| Task | Status | Notes |
-|------|--------|-------|
-| MGP-001: Fork memory-lancedb-pro | ✅ Complete | Branch: `feat/graph-memory` |
-| MGP-002: Reuse core components | ✅ Complete | embedder, chunker, llm-client |
-| MGP-003: Design Graph Schema | ✅ Complete | Schema documented in README |
-| MGP-004: Implement GraphClient SDK | ✅ Complete | Neo4j + LanceDB wrapper |
-| MGP-005: Memory → Graph Mapper | ✅ Complete | Data mapping logic |
-| MGP-006: Graph Retriever | ✅ Complete | Query engine |
-| MGP-007: Vector + Graph Fusion | ✅ Complete | Hybrid retrieval |
-| MGP-008: Graph Reasoning Engine | ✅ Complete | Path/mode inference |
-| MGP-009: Event Notification | ✅ Complete | Pub/sub mechanism |
-| MGP-010: Unit Tests | ✅ Complete | >80% coverage |
-| MGP-011: README/SKILL.md | ✅ Complete | This document |
-| MGP-012: Performance Optimization | ✅ Complete | Query optimization |
-
-**Source Code**: 9 files in `src/` directory  
-**Tests**: 5 unit test files in `tests/`  
-**Documentation**: Schema, API reference, usage examples
+// Query the graph
+const results = await graph.runQuery(`
+  MATCH (m:Memory {id: 'mem-001'})-[:RELATED_TO]->(related)
+  RETURN related
+`);
+```
 
 ---
 
-### Phase 2: OpenClaw Coordinator (🟡 In Progress)
+## 📊 Graph Schema
 
-| Task | Status | Notes |
-|------|--------|-------|
-| COORD-001: Design Coordinator architecture | 🟡 In Progress | Architecture design |
-| COORD-002: Implement Channel Manager | ⏳ Pending | Multi-channel support |
-| COORD-003: Implement Task Dispatcher | ⏳ Pending | Priority queue |
-| COORD-004: Implement Health Monitor | ⏳ Pending | Heartbeat detection |
-| COORD-005: Integrate Memory Graph Pro | ⏳ Pending | GraphClient integration |
-| COORD-006: Unit Tests | ⏳ Pending | >80% coverage |
-| COORD-007: README/SKILL.md | ⏳ Pending | Documentation |
-| COORD-008: Performance Optimization | ⏳ Pending | <100ms dispatch |
+### Node Types
 
----
+| Label | Description | Properties |
+|-------|-------------|------------|
+| `Memory` | Base memory unit | id, content, timestamp, source |
+| `Entity` | Named entity | name, type, confidence |
+| `Event` | Occurred event | type, timestamp, actors |
+| `Concept` | Abstract concept | name, category, definition |
 
-### Phase 3: Hermes Skills (🟡 In Progress)
+### Relationship Types
 
-| Task | Status | Notes |
-|------|--------|-------|
-| HERMES-001: Configure Hermes environment | 🟡 In Progress | Setup dev environment |
-| HERMES-002: Implement Crawler Skill | ⏳ Pending | File watching / API calls |
-| HERMES-003: Implement Parser Skill | ⏳ Pending | Markdown/Meeting parsing |
-| HERMES-004: Implement Analyzer Skill | ⏳ Pending | Pattern analysis |
-| HERMES-005: Implement Knowledge Skill | ⏳ Pending | Knowledge persistence |
-| HERMES-006: Implement Delivery Skill | ⏳ Pending | Push notifications |
-| HERMES-007: Integrate GraphClient | ⏳ Pending | Graph access |
-| HERMES-008: Unit Tests | ⏳ Pending | >80% coverage |
-| HERMES-009: README | ⏳ Pending | Documentation |
-| HERMES-010: Performance Optimization | ⏳ Pending | <500ms execution |
+| Type | Direction | Meaning |
+|------|-----------|---------|
+| `RELATED_TO` | Bidirectional | General association |
+| `CAUSES` | Unidirectional | Causal relationship |
+| `OCCURS_AFTER` | Unidirectional | Temporal sequence |
+| `MENTIONS` | Unidirectional | Reference to entity |
+| `DERIVED_FROM` | Unidirectional | Inference source |
 
 ---
 
-### Phase 4: Integration & Release (⏳ Up Next)
+## 🧪 Testing
 
-- End-to-end integration testing
-- Docker image build
-- Deployment documentation
-- GitHub Release preparation
+```bash
+# Run unit tests
+npm test
+
+# Run specific test suite
+npm test -- tests/graph-client.test.ts
+
+# Run with coverage
+npm test -- --coverage
+```
 
 ---
 
 ## 📚 Documentation
 
-### Spec-Flow Documents
-
-| Document | Location | Status |
-|----------|----------|--------|
-| **Proposal** | `.spec-flow/active/github-push-proposal/proposal.md` | ✅ Complete |
-| **Requirements** | `.spec-flow/active/github-push-proposal/requirements.md` | ✅ Complete |
-| **Design** | `.spec-flow/active/github-push-proposal/design.md` | ✅ Complete |
-| **Tasks** | `.spec-flow/active/github-push-proposal/tasks.md` | ✅ Complete |
-
-### Key Documents
-
-- **Proposal** — Project background, goals, scope, risks, timeline
-- **Requirements** — 46 functional/non-functional requirements (EARS format)
-- **Design** — Technical architecture, component design, data models
-- **Tasks** — Detailed task breakdown with dependencies
+| Document | Description |
+|----------|-------------|
+| [Schema Design](docs/schema.md) | Graph schema + relationship types |
+| [API Reference](docs/api-reference.md) | GraphClient API documentation |
+| [Development Guide](docs/development.md) | Setup + contribution guidelines |
 
 ---
 
-## ⚠️ Risks & Mitigation
+## 🎯 Use Cases
 
-### Technical Risks
+### 1. Multi-Agent Customer Support
 
-| Risk | Probability | Impact | Mitigation |
-|------|-------------|--------|------------|
-| Graph query performance | Medium | High | Index optimization, caching, pagination |
-| Data consistency | Medium | High | Transactions, versioning, conflict detection |
-| Schema evolution | High | Medium | Version control, migration scripts |
-| Memory usage | Medium | Medium | Graph partitioning, on-demand loading |
+**Scenario**: Customer reports a bug
 
-### Project Risks
+```
+1. Crawler → Receives ticket from Feishu/Email
+2. Parser → Extracts: product, version, error message
+3. Analyzer → Queries graph:
+   - Similar bugs? (pattern match)
+   - Recent changes? (temporal query)
+   - Affected users? (path traversal)
+4. Knowledge → Stores diagnosis
+5. Delivery → Sends solution to customer
+```
 
-| Risk | Probability | Impact | Mitigation |
-|------|-------------|--------|------------|
-| Scope creep | High | High | Strict Non-Goals, phased delivery |
-| Complexity超预期 | Medium | High | Early prototyping, simplified MVP |
-| Breaking compatibility | Low | High | Preserve existing API, backward compatible |
+**Graph Value**: Connects bug report to code changes, past incidents, and affected users — all through graph traversal.
+
+---
+
+### 2. Research Assistant
+
+**Scenario**: User asks "What's the relationship between Project A and Client B?"
+
+```
+1. Analyzer → Runs graph query:
+   MATCH (p:Project {name: 'A'})-[*1..3]-(c:Client {name: 'B'})
+   RETURN p, c, relationships
+   
+2. Graph returns:
+   - Project A → uses → Library X
+   - Library X → developed by → Company Y
+   - Company Y → acquired by → Client B
+   
+3. Delivery → Explains: "Project A depends on Library X, which Client B now owns"
+```
+
+**Graph Value**: Multi-hop reasoning discovers indirect relationships that vector search would miss.
+
+---
+
+### 3. Incident Response
+
+**Scenario**: Production deployment fails
+
+```
+Graph enables:
+- Trace failure to recent code change (CAUSES relationship)
+- Find similar past incidents (pattern match)
+- Identify affected services (path traversal)
+- Notify responsible teams (event subscription)
+```
+
+**Graph Value**: Real-time event-driven coordination across monitoring, analysis, and communication agents.
 
 ---
 
 ## 🤝 Contributing
 
-### Development Workflow
-
-1. **Fork** the repository
-2. **Create feature branch** (`feat/xxx`)
-3. **Implement + Test** (coverage > 80%)
-4. **Pre-commit checklist** (see `CHECKLIST.md`)
-5. **Submit PR** (use template in `PR_DESCRIPTION.md`)
-6. **Code review** → Merge
-
-### Pre-Commit Checklist
-
-- [ ] No sensitive data (API keys, secrets)
-- [ ] Unit tests pass
-- [ ] Code formatted (Prettier/ESLint)
-- [ ] Documentation updated
-- [ ] Commit message follows convention
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feat/your-feature`)
+3. Commit your changes (`git commit -m 'feat: add your feature'`)
+4. Push to the branch (`git push origin feat/your-feature`)
+5. Open a Pull Request
 
 ---
 
-## 📅 Timeline
+## 📝 License
 
-| Phase | Content | Duration | Start | End |
-|-------|---------|----------|-------|-----|
-| **Proposal** | This document | 1 day | 2026-04-20 | 2026-04-20 |
-| **Requirements** | Detailed specs | 2-3 days | TBD | - |
-| **Design** | Technical architecture | 3-5 days | TBD | - |
-| **Tasks** | Task breakdown | 1-2 days | TBD | - |
-| **Phase 1** | Memory Graph Pro | 2-3 weeks | TBD | - |
-| **Phase 2** | Coordinator | 1-2 weeks | TBD | - |
-| **Phase 3** | Hermes Skills | 2 weeks | TBD | - |
-| **Phase 4** | Integration & Release | 1 week | TBD | - |
-| **Total** | - | **6-8 weeks** | - | - |
+MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
-## 📄 License
+## 🔗 Links
 
-MIT
-
----
-
-## ☕ Support
-
-[!["Buy Me A Coffee"](https://storage.ko-fi.com/cdn/kofi2.png?v=3)](https://ko-fi.com/aila)
+- **GitHub**: https://github.com/myhearwillgoon/Graph-Memory-Mapping-Skills
+- **Issues**: https://github.com/myhearwillgoon/Graph-Memory-Mapping-Skills/issues
+- **Discord**: [Join our community](https://discord.gg/clawd)
 
 ---
 
-## 📱 Contact
-
-<img src="assets/wechat-qrcode.jpeg" width="200" alt="WeChat QR Code" />
-
----
-
-*Built with 🐉 for multi-agent collaboration*
+**Built with** 🐉 **for multi-agent collaboration**
