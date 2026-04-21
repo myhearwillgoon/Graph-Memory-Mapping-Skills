@@ -1,0 +1,143 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Silra.cn Provider Configuration Schema",
+  "description": "Configuration schema for Silra.cn API provider in memory-lancedb-pro",
+  "type": "object",
+  "properties": {
+    "embedding": {
+      "type": "object",
+      "description": "Embedding provider configuration",
+      "properties": {
+        "provider": {
+          "type": "string",
+          "enum": ["silra"],
+          "description": "Provider name"
+        },
+        "apiKey": {
+          "type": "string",
+          "description": "Silra.cn API key (env: SILRA_API_KEY)"
+        },
+        "baseUrl": {
+          "type": "string",
+          "default": "https://api.silra.cn/v1",
+          "description": "API base URL"
+        },
+        "model": {
+          "type": "string",
+          "default": "text-embedding-v4",
+          "enum": ["text-embedding-v4", "bge-large-zh-v1.5"],
+          "description": "Embedding model"
+        },
+        "dimensions": {
+          "type": "integer",
+          "default": 1024,
+          "description": "Embedding dimensions"
+        },
+        "timeout": {
+          "type": "integer",
+          "default": 30000,
+          "description": "Request timeout in milliseconds"
+        },
+        "maxRetries": {
+          "type": "integer",
+          "default": 3,
+          "description": "Maximum retry attempts"
+        }
+      },
+      "required": ["provider", "apiKey"]
+    },
+    "llm": {
+      "type": "object",
+      "description": "LLM provider configuration for Smart Extraction",
+      "properties": {
+        "provider": {
+          "type": "string",
+          "enum": ["silra"],
+          "description": "Provider name"
+        },
+        "apiKey": {
+          "type": "string",
+          "description": "Silra.cn API key (env: SILRA_API_KEY)"
+        },
+        "baseUrl": {
+          "type": "string",
+          "default": "https://api.silra.cn/v1",
+          "description": "API base URL"
+        },
+        "model": {
+          "type": "string",
+          "default": "qwen3-8b",
+          "enum": ["qwen3-8b", "qwen3.5-plus", "glm-4.7"],
+          "description": "LLM model for Smart Extraction"
+        },
+        "temperature": {
+          "type": "number",
+          "default": 0.7,
+          "minimum": 0,
+          "maximum": 2,
+          "description": "LLM temperature"
+        },
+        "maxTokens": {
+          "type": "integer",
+          "default": 2048,
+          "description": "Maximum tokens in response"
+        }
+      },
+      "required": ["provider", "apiKey"]
+    },
+    "rerank": {
+      "type": ["object", "null"],
+      "description": "Reranker provider configuration",
+      "properties": {
+        "provider": {
+          "type": "string",
+          "enum": ["silra"],
+          "description": "Provider name"
+        },
+        "apiKey": {
+          "type": "string",
+          "description": "Silra.cn API key (env: SILRA_API_KEY)"
+        },
+        "baseUrl": {
+          "type": "string",
+          "default": "https://api.silra.cn/v1",
+          "description": "API base URL"
+        },
+        "model": {
+          "type": "string",
+          "default": "bge-reranker-v2-m3",
+          "description": "Reranker model"
+        },
+        "topK": {
+          "type": "integer",
+          "default": 12,
+          "description": "Top K documents to rerank"
+        }
+      },
+      "required": ["provider", "apiKey"]
+    }
+  },
+  "required": ["embedding"],
+  "examples": [
+    {
+      "embedding": {
+        "provider": "silra",
+        "apiKey": "${SILRA_API_KEY}",
+        "model": "text-embedding-v4",
+        "baseUrl": "https://api.silra.cn/v1"
+      },
+      "llm": {
+        "provider": "silra",
+        "apiKey": "${SILRA_API_KEY}",
+        "model": "qwen3-8b",
+        "baseUrl": "https://api.silra.cn/v1"
+      },
+      "rerank": {
+        "provider": "silra",
+        "apiKey": "${SILRA_API_KEY}",
+        "model": "bge-reranker-v2-m3",
+        "baseUrl": "https://api.silra.cn/v1"
+      }
+    }
+  ]
+}
