@@ -5,7 +5,7 @@
  */
 
 import neo4j, { Driver, Session, Transaction, Record as Neo4jRecord } from 'neo4j-driver';
-import * as lancedb from 'lancedb';
+import * as lancedb from '@lancedb/lancedb';
 import { EmbeddingProvider } from '../types';
 import { logger } from '../utils/logger';
 

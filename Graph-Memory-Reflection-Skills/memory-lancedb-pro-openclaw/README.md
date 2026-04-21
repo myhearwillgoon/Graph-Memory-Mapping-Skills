@@ -1,233 +1,425 @@
-# memory-lancedb-pro — OpenClaw Memory Skill
+# Graph Memory Mapping Skills
 
-> **Claude Code Skill** for [memory-lancedb-pro](https://github.com/CortexReach/memory-lancedb-pro) — production-grade long-term memory plugin for OpenClaw AI agents.
+> **Graph-Enhanced Memory System** — Neo4j + LanceDB hybrid retrieval for multi-agent collaboration
 
-This skill gives Claude Code deep, accurate knowledge of every feature in `memory-lancedb-pro` (v1.1.0-beta.8): installation, optimal configuration, Smart Extraction, hybrid retrieval, Weibull decay lifecycle, multi-scope isolation, self-improvement governance, and all MCP tools.
-
----
-
-## What this skill does
-
-When installed, Claude Code can:
-
-- **Guide you through a 7-step optimal configuration workflow** — just say _"help me enable the best config"_
-- **Present 4 deployment plans** (Full Power / Budget / Simple / Fully Local) with provider links and tradeoffs
-- **Install, configure, and verify** the plugin using `openclaw plugins install` or git clone
-- **Set up Ollama** for fully local, zero-API-cost deployment
-- **Configure every feature**: Smart Extraction, hybrid retrieval, reranking, multi-scope, Weibull decay, session memory, self-improvement governance
-- **Use all 9 MCP tools** correctly: `memory_recall`, `memory_store`, `memory_forget`, `memory_update`, `memory_stats`, `memory_list`, `self_improvement_log`, `self_improvement_extract_skill`, `self_improvement_review`
-- **Avoid common pitfalls** — workspace plugin enablement, `autoRecall` default-false, jiti cache, env vars, scope isolation, etc.
+**Version**: 1.0.0  
+**Branch**: `feat/graph-memory`  
+**Status**: 🚧 In Development (Phase 1: Memory Graph Pro)
 
 ---
 
-## Installation
+## 🎯 Overview
+
+**Graph Memory Mapping** extends traditional vector-based memory with **knowledge graph capabilities**, enabling:
+
+- **Multi-dimensional relationship mapping** — Connect memories via semantic, temporal, and causal relationships
+- **Graph-based reasoning** — Discover hidden patterns through path traversal and graph inference
+- **Hybrid retrieval** — Combine vector similarity + graph traversal for comprehensive results
+- **Event-driven architecture** — React to memory changes in real-time
+
+Built for **multi-agent collaboration** where agents share a unified graph memory layer.
+
+---
+
+## 🏗️ Architecture
+
+### System Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      User Layer                              │
+│         (Feishu / WeChat / Email / Dashboard)                │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────────┐
+│              OpenClaw Gateway Layer                          │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │  Coordinator Agent (OpenClaw Native)                │   │
+│  │  - Channel Management                                │   │
+│  │  - Task Dispatch                                     │   │
+│  │  - Health Monitoring                                 │   │
+│  └─────────────────────────────────────────────────────┘   │
+└──────────────────────────┬──────────────────────────────────┘
+                           │ RPC / Event
+                           ▼
+┌─────────────────────────────────────────────────────────────┐
+│              Hermes Agent Layer                              │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐      │
+│  │ Crawler  │ │ Parser   │ │ Analyzer │ │ Delivery │      │
+│  │ Skill    │ │ Skill    │ │ Skill    │ │ Skill    │      │
+│  └────┬─────┘ └────┬─────┘ └────┬─────┘ └────┬─────┘      │
+│       └────────────┴────────────┴────────────┘             │
+│                         │                                   │
+│                         ▼                                   │
+│              ┌─────────────────────┐                       │
+│              │   GraphClient SDK   │                       │
+│              └─────────────────────┘                       │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────────┐
+│              Graph Memory Layer                              │
+│  ┌─────────────────┐  ┌─────────────────┐                  │
+│  │  Neo4j          │  │  LanceDB        │                  │
+│  │  (Knowledge    │  │  (Vector        │                  │
+│  │   Graph)        │  │   Retrieval)    │                  │
+│  └─────────────────┘  └─────────────────┘                  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Architecture Principles
+
+| Principle | Description |
+|-----------|-------------|
+| **Graph-Centric** | All persistent state written to graph |
+| **Hybrid Communication** | Real-time via RPC, state sync via graph |
+| **Event-Driven** | Graph updates trigger events |
+| **Modular** | Each Skill has single responsibility |
+| **Extensible** | Add Skills without modifying core |
+
+---
+
+## 📋 Project Scope
+
+### Component Breakdown
+
+| Component | GitHub Repo | Form | Priority |
+|-----------|-------------|------|----------|
+| **Main Project** | `graph-multi-agent-system` | End-to-End Repo | P0 |
+| **Memory Graph Pro** | `memory-graph-pro-skill` | OpenClaw Skill | P0 |
+| **OpenClaw Coordinator** | `openclaw-coordinator-skill` | OpenClaw Skill | P0 |
+| **Hermes Skills** | `hermes-graph-skills` | Hermes Skill Package | P1 |
+
+### Development Phases
+
+| Phase | Content | Duration | Output |
+|-------|---------|----------|--------|
+| **Phase 1** | Memory Graph Pro | 2-3 weeks | Skill installable |
+| **Phase 2** | OpenClaw Coordinator | 1-2 weeks | Skill installable |
+| **Phase 3** | Hermes Skills | 2 weeks | Skill package |
+| **Phase 4** | Integration & Release | 1 week | GitHub Release |
+
+---
+
+## 🎯 Goals & Success Metrics
+
+### Core Goals
+
+1. **Graph-Driven Memory** — Multi-dimensional relationship mapping + graph inference
+2. **Hybrid Communication** — Graph (stable) + RPC (fast)
+3. **Active Push** — Proactively provide insights based on graph reasoning
+4. **One-Click Deployment** — Docker Compose setup
+
+### Success Metrics
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Retrieval Accuracy** | > 85% | User feedback / CTR |
+| **Association Discovery** | > 5 per query | Graph inference results |
+| **Active Push** | > 3 per day | Push frequency |
+| **Push Accuracy** | > 80% | User approval rate |
+| **GitHub Stars** | 100+ (3 months) | GitHub stats |
+| **Skill Installs** | 50+ users | Install stats |
+
+---
+
+## 📦 Graph Schema
+
+### Node Types
+
+| Label | Properties | Description |
+|-------|------------|-------------|
+| **User** | id, name, timezone, createdAt | User entity |
+| **Diary** | id, date, content, mood, tags | Daily journal |
+| **Meeting** | id, title, startTime, decisions | Meeting records |
+| **Behavior** | id, type, timestamp, details | User actions |
+| **Knowledge** | id, title, category, confidence | Knowledge nodes |
+
+### Relationship Types
+
+| Relationship | Source → Target | Description |
+|--------------|-----------------|-------------|
+| **HAS_EXPERIENCE** | User → Diary | User has diary entries |
+| **ATTENDED_MEETING** | User → Meeting | User attended meeting |
+| **PERFORMED_ACTION** | User → Behavior | User performed action |
+| **LEARNED_KNOWLEDGE** | User → Knowledge | User learned knowledge |
+| **SIMILAR_TO** | Diary → Diary | Diary similarity (vector) |
+
+---
+
+## 🔧 Core Components
+
+### GraphClient SDK
+
+```typescript
+class GraphClient {
+  // Neo4j Operations
+  async query(cypher: string, params?: any): Promise<any>;
+  async write(node: Node, relationships?: Relationship[]): Promise<void>;
+  
+  // LanceDB Operations
+  async search(query: string, topK?: number): Promise<VectorResult[]>;
+  async insert(embedding: number[], metadata: any): Promise<void>;
+  
+  // Event Subscription
+  subscribe(eventType: string, handler: EventHandler): void;
+}
+```
+
+### Example Queries
+
+```cypher
+// Query 1: User's last 7 days diaries
+MATCH (u:User {id: $userId})-[:HAS_EXPERIENCE]->(d:Diary)
+WHERE d.date >= date() - duration({days: 7})
+RETURN d ORDER BY d.date DESC;
+
+// Query 2: Path Reasoning (Why low efficiency?)
+MATCH path = (u:User)-[*1..3]->(issue)
+WHERE issue:HealthRecord OR issue:Meeting
+RETURN path LIMIT 10;
+```
+
+---
+
+## 📁 Project Structure
+
+```
+memory-lancedb-pro-openclaw/
+├── src/
+│   ├── graph-client.ts        # Neo4j + LanceDB SDK
+│   ├── mapper.ts              # Memory → Graph mapping
+│   ├── retriever.ts           # Graph retrieval engine
+│   ├── fusion.ts              # Vector + Graph fusion
+│   ├── reasoning.ts           # Graph inference engine
+│   ├── events.ts              # Event notification system
+│   ├── embedder.ts            # Text embedding (reused)
+│   ├── chunker.ts             # Document chunking (reused)
+│   └── llm-client.ts          # LLM client (reused)
+├── tests/
+│   ├── graph-client.test.ts
+│   ├── mapper.test.ts
+│   ├── retriever.test.ts
+│   ├── fusion.test.ts
+│   └── events.test.ts
+├── docs/
+│   └── schema.md              # Graph schema documentation
+├── README.md                  # This file
+├── SKILL.md                   # OpenClaw skill definition
+├── PR_DESCRIPTION.md          # PR template
+├── PR_INSTRUCTIONS.md         # Contribution guide
+├── CHECKLIST.md               # Pre-commit checklist
+└── CONFIG_SILRA.md            # China API configuration
+```
+
+---
+
+## 🚀 Quick Start
 
 ### Prerequisites
 
-**For Claude Code users:**
-- [Claude Code](https://claude.ai/code) CLI installed
-- [memory-lancedb-pro](https://github.com/CortexReach/memory-lancedb-pro) plugin configured as an MCP server
+- **Node.js** 18+
+- **Neo4j** 5.0+ (Docker or local)
+- **LanceDB** 0.5+
+- **OpenClaw** Gateway running
 
-**For OpenClaw users:**
-- [OpenClaw](https://openclaw.ai) gateway running
-- `memory-lancedb-pro` plugin installed via `openclaw plugins install memory-lancedb-pro@beta`
-
-### Install the skill
-
-> **Note:** This is a *skill* (knowledge file for AI agents), not a plugin. Skills are installed by placing them in your skills directory — there is no `openclaw skills install` command.
-
-**Option A — clone this repo (recommended):**
-
-For **Claude Code** users:
-```bash
-git clone https://github.com/CortexReach/memory-lancedb-pro-skill.git ~/.claude/skills/memory-lancedb-pro
-```
-
-For **OpenClaw** users:
-```bash
-git clone https://github.com/CortexReach/memory-lancedb-pro-skill.git ~/.openclaw/workspace/skills/memory-lancedb-pro-skill
-```
-
-**Option B — download ZIP from GitHub:**
-
-1. Click **Code → Download ZIP** on the [repository page](https://github.com/CortexReach/memory-lancedb-pro-skill)
-2. Extract and place in your skills directory:
+### Installation
 
 ```bash
-# Claude Code
-unzip memory-lancedb-pro-skill-main.zip
-mv memory-lancedb-pro-skill-main ~/.claude/skills/memory-lancedb-pro
+# Clone the repository
+git clone https://github.com/myhearwillgoon/Graph-Memory-Mapping-Skills.git
+cd Graph-Memory-Mapping-Skills
 
-# OpenClaw
-unzip memory-lancedb-pro-skill-main.zip
-mv memory-lancedb-pro-skill-main ~/.openclaw/workspace/skills/memory-lancedb-pro-skill
+# Install dependencies
+npm install
+
+# Start Neo4j (Docker)
+docker-compose up -d neo4j
+
+# Run tests
+npm test
 ```
 
-**Verify the skill is loaded:**
+### Configuration
 
-```bash
-# Claude Code: the skill loads automatically based on trigger conditions
-# To test: ask Claude Code "help me configure memory-lancedb-pro"
-
-# OpenClaw: check skill discovery
-openclaw skills list
-```
+See `CONFIG_SILRA.md` for China API provider setup (Silra.cn, etc.)
 
 ---
 
-## Skill Structure
+## 📊 Current Progress
 
-```
-memory-lancedb-pro/
-├── SKILL.md                      # Main skill file (loaded into context automatically)
-└── references/
-    └── full-reference.md         # Deep technical reference (loaded on demand)
-```
+**Last Updated**: 2026-04-21
 
-### Progressive disclosure
+### Overall Status
 
-| Level | What loads | When |
-|-------|-----------|------|
-| Metadata (`name` + `description`) | Always | ~100 words, negligible |
-| `SKILL.md` body | When skill triggers | Operational workflows, all config options |
-| `references/full-reference.md` | On demand | DB schema, Weibull formulas, source file map, scoring internals |
+| Component | Progress | Status |
+|-----------|----------|--------|
+| **Memory Graph Pro** | 100% | ✅ Complete |
+| **OpenClaw Coordinator** | In Progress | 🟡 Developing |
+| **Hermes Skills** | In Progress | 🟡 Developing |
+| **Integration & Release** | Pending | ⏳ Up Next |
 
 ---
 
-## Trigger phrases
+### Phase 1: Memory Graph Pro (✅ 100% Complete)
 
-Claude Code loads this skill automatically when you mention:
+| Task | Status | Notes |
+|------|--------|-------|
+| MGP-001: Fork memory-lancedb-pro | ✅ Complete | Branch: `feat/graph-memory` |
+| MGP-002: Reuse core components | ✅ Complete | embedder, chunker, llm-client |
+| MGP-003: Design Graph Schema | ✅ Complete | Schema documented in README |
+| MGP-004: Implement GraphClient SDK | ✅ Complete | Neo4j + LanceDB wrapper |
+| MGP-005: Memory → Graph Mapper | ✅ Complete | Data mapping logic |
+| MGP-006: Graph Retriever | ✅ Complete | Query engine |
+| MGP-007: Vector + Graph Fusion | ✅ Complete | Hybrid retrieval |
+| MGP-008: Graph Reasoning Engine | ✅ Complete | Path/mode inference |
+| MGP-009: Event Notification | ✅ Complete | Pub/sub mechanism |
+| MGP-010: Unit Tests | ✅ Complete | >80% coverage |
+| MGP-011: README/SKILL.md | ✅ Complete | This document |
+| MGP-012: Performance Optimization | ✅ Complete | Query optimization |
 
-- `memory-lancedb-pro`, `memory pro`, `lancedb pro`
-- `help me enable the best config` / `apply optimal configuration`
-- `memory_recall`, `memory_store`, `memory_forget`, `memory_update`
-- `Smart Extraction`, `autoCapture`, `autoRecall`
-- `hybrid retrieval`, `reranker`, `BM25`, `Weibull decay`
-- `self_improvement_log`, `LEARNINGS.md`, `ERRORS.md`
-
----
-
-## Covered Features
-
-### Installation & Setup
-- 3 installation methods: `openclaw plugins install`, git clone with manual path, existing deployment migration
-- Plugin enablement rules: `plugins.allow`, `plugins.entries.<id>.enabled`, `plugins.slots.memory`
-- Workspace plugin gotchas (disabled by default, requires explicit `allow`)
-- Custom path env vars: `OPENCLAW_HOME`, `OPENCLAW_CONFIG_PATH`, `OPENCLAW_STATE_DIR`
-- Post-installation smoke test checklist
-
-### 7-Step Optimal Config Workflow
-When you say **"help me enable the best config"**, Claude will:
-1. Present 4 deployment plans with provider links
-2. Ask about your existing API keys and config location
-3. Find and read your current `openclaw.json`
-4. Build a merged config block for your chosen plan
-5. Apply it with the correct template (Method 1 vs Method 2)
-6. Validate and restart the gateway
-7. Run a full smoke test
-
-### 4 Deployment Plans
-
-| Plan | Embedding | Reranker | LLM | API Keys |
-|------|-----------|----------|-----|----------|
-| **A — Full Power** | Jina `jina-embeddings-v5-text-small` | Jina `jina-reranker-v3` | OpenAI `gpt-4o-mini` | Jina + OpenAI |
-| **B — Budget** | Jina embeddings | SiliconFlow BGE (free tier) | OpenAI `gpt-4o-mini` | Jina + SiliconFlow + OpenAI |
-| **C — Simple** | OpenAI `text-embedding-3-small` | None | OpenAI `gpt-4o-mini` | OpenAI only |
-| **D — Local** | Ollama `nomic-embed-text` (768-dim) | None | Ollama `qwen2.5:7b` | None (free) |
-
-Each plan includes: API key acquisition links, cost notes, RAM requirements (Plan D), and tradeoff explanations.
-
-### Smart Extraction
-- 6-category LLM-powered classification: Profile → `fact`, Preferences → `preference`, Entities → `entity`, Events → `decision`, Cases → `fact`, Patterns → `other`
-- L0/L1/L2 layered storage (Abstract / Overview / Full Content)
-- Two-stage deduplication: vector pre-filter (≥ 0.7) + LLM decision (`CREATE | MERGE | SKIP | SUPPORT | CONTEXTUALIZE | CONTRADICT`)
-- Config: `smartExtraction`, `extractMinMessages`, `extractMaxChars`, `llm.*`
-
-### Hybrid Retrieval
-- Fusion: `(vectorScore × 0.7) + (bm25Score × 0.3)` via RRF
-- Pipeline: RRF → Cross-Encoder Rerank → Lifecycle Decay Boost → Length Norm → Hard Min Score → MMR Diversity
-- BM25 keyword preservation (score ≥ 0.75 bypasses semantic filter — protects API keys, ticket numbers)
-- 4 reranker providers: Jina, SiliconFlow, Voyage AI, Pinecone
-
-### Memory Lifecycle (Weibull Decay)
-- 3 tiers: Core (β=0.8, floor=0.9) / Working (β=1.0, floor=0.7) / Peripheral (β=1.3, floor=0.5)
-- Promotion/demotion rules based on access count, composite score, importance, age
-- Composite score: Recency 40% + Frequency 30% + Intrinsic 30%
-- Access reinforcement: frequently recalled memories decay more slowly
-
-### Multi-Scope Isolation
-- Scope formats: `global`, `agent:<id>`, `custom:<name>`, `project:<id>`, `user:<id>`
-- `scopes.agentAccess` mapping for multi-scope agents
-- Disable memory entirely: `{ "plugins": { "slots": { "memory": "none" } } }`
-
-### All 9 MCP Tools
-Core (auto-registered): `memory_recall`, `memory_store`, `memory_forget`, `memory_update`
-Management (opt-in): `memory_stats`, `memory_list`
-Self-improvement (opt-in): `self_improvement_log`, `self_improvement_extract_skill`, `self_improvement_review`
-
-### Self-Improvement Governance
-- `LEARNINGS.md` (IDs: `LRN-YYYYMMDD-XXX`) and `ERRORS.md` (IDs: `ERR-YYYYMMDD-XXX`)
-- Entry lifecycle: `pending → resolved → promoted_to_skill`
-- Skill scaffold generation from learning entries
-
-### CLI Reference
-Full coverage of all `openclaw memory-pro` commands: `list`, `search`, `stats`, `delete`, `delete-bulk`, `export`, `import`, `reembed`, `upgrade`, `migrate`
-
-### Ollama Local Deployment (Plan D)
-- Step-by-step model pull commands
-- Ollama health check and embedding endpoint verification
-- JSON output reliability notes per model
-- Remote Ollama host configuration
-- Fallback when Smart Extraction fails with local LLM
-
-### Iron Rules & Slash Commands
-- 5 Iron Rules for AI agents (dual-layer storage, LanceDB hygiene, recall-before-retry, etc.)
-- `/lesson` and `/remember` custom slash command templates for `AGENTS.md`
+**Source Code**: 9 files in `src/` directory  
+**Tests**: 5 unit test files in `tests/`  
+**Documentation**: Schema, API reference, usage examples
 
 ---
 
-## What's in `references/full-reference.md`
+### Phase 2: OpenClaw Coordinator (🟡 In Progress)
 
-Deep technical content loaded only when needed:
-
-- **Database schema**: LanceDB `memories` table fields and metadata keys
-- **Source file map**: All 31 source files with sizes and responsibilities
-- **Retrieval pipeline**: Full scoring formula chain with all 9 parameters and defaults
-- **Weibull decay formulas**: `recency = exp(-lambda × daysSince^beta)` with tier-specific parameters
-- **Embedding config interface**: All `EmbeddingConfig` options
-- **Document chunking**: 5-level splitting hierarchy, smart chunking math
-- **Smart metadata system**: Three-tier content fields, bounded array limits, normalization functions
-- **LLM client internals**: Temperature, response parsing, error recovery strategy
-- **Noise filter details**: 5 built-in noise categories, auto-learning prototypes (bank cap: 200)
-- **Adaptive retrieval full logic**: Skip/force conditions with CJK equivalents
-- **Access tracking & reinforcement**: Debounce timer, logarithmic reinforcement curve
-- **Reflection storage subsystem**: 4 storage types, importance weights, dedup threshold
+| Task | Status | Notes |
+|------|--------|-------|
+| COORD-001: Design Coordinator architecture | 🟡 In Progress | Architecture design |
+| COORD-002: Implement Channel Manager | ⏳ Pending | Multi-channel support |
+| COORD-003: Implement Task Dispatcher | ⏳ Pending | Priority queue |
+| COORD-004: Implement Health Monitor | ⏳ Pending | Heartbeat detection |
+| COORD-005: Integrate Memory Graph Pro | ⏳ Pending | GraphClient integration |
+| COORD-006: Unit Tests | ⏳ Pending | >80% coverage |
+| COORD-007: README/SKILL.md | ⏳ Pending | Documentation |
+| COORD-008: Performance Optimization | ⏳ Pending | <100ms dispatch |
 
 ---
 
-## About memory-lancedb-pro
+### Phase 3: Hermes Skills (🟡 In Progress)
 
-The underlying plugin is maintained at [CortexReach/memory-lancedb-pro](https://github.com/CortexReach/memory-lancedb-pro).
-
-Key specs:
-- **Version**: 1.1.0-beta.8
-- **Storage**: LanceDB (embedded, no separate server)
-- **Retrieval**: Hybrid vector + BM25 with RRF fusion
-- **Node.js**: 22.16+ required, 24 recommended
-- **License**: MIT
+| Task | Status | Notes |
+|------|--------|-------|
+| HERMES-001: Configure Hermes environment | 🟡 In Progress | Setup dev environment |
+| HERMES-002: Implement Crawler Skill | ⏳ Pending | File watching / API calls |
+| HERMES-003: Implement Parser Skill | ⏳ Pending | Markdown/Meeting parsing |
+| HERMES-004: Implement Analyzer Skill | ⏳ Pending | Pattern analysis |
+| HERMES-005: Implement Knowledge Skill | ⏳ Pending | Knowledge persistence |
+| HERMES-006: Implement Delivery Skill | ⏳ Pending | Push notifications |
+| HERMES-007: Integrate GraphClient | ⏳ Pending | Graph access |
+| HERMES-008: Unit Tests | ⏳ Pending | >80% coverage |
+| HERMES-009: README | ⏳ Pending | Documentation |
+| HERMES-010: Performance Optimization | ⏳ Pending | <500ms execution |
 
 ---
 
-## License
+### Phase 4: Integration & Release (⏳ Up Next)
+
+- End-to-end integration testing
+- Docker image build
+- Deployment documentation
+- GitHub Release preparation
+
+---
+
+## 📚 Documentation
+
+### Spec-Flow Documents
+
+| Document | Location | Status |
+|----------|----------|--------|
+| **Proposal** | `.spec-flow/active/github-push-proposal/proposal.md` | ✅ Complete |
+| **Requirements** | `.spec-flow/active/github-push-proposal/requirements.md` | ✅ Complete |
+| **Design** | `.spec-flow/active/github-push-proposal/design.md` | ✅ Complete |
+| **Tasks** | `.spec-flow/active/github-push-proposal/tasks.md` | ✅ Complete |
+
+### Key Documents
+
+- **Proposal** — Project background, goals, scope, risks, timeline
+- **Requirements** — 46 functional/non-functional requirements (EARS format)
+- **Design** — Technical architecture, component design, data models
+- **Tasks** — Detailed task breakdown with dependencies
+
+---
+
+## ⚠️ Risks & Mitigation
+
+### Technical Risks
+
+| Risk | Probability | Impact | Mitigation |
+|------|-------------|--------|------------|
+| Graph query performance | Medium | High | Index optimization, caching, pagination |
+| Data consistency | Medium | High | Transactions, versioning, conflict detection |
+| Schema evolution | High | Medium | Version control, migration scripts |
+| Memory usage | Medium | Medium | Graph partitioning, on-demand loading |
+
+### Project Risks
+
+| Risk | Probability | Impact | Mitigation |
+|------|-------------|--------|------------|
+| Scope creep | High | High | Strict Non-Goals, phased delivery |
+| Complexity超预期 | Medium | High | Early prototyping, simplified MVP |
+| Breaking compatibility | Low | High | Preserve existing API, backward compatible |
+
+---
+
+## 🤝 Contributing
+
+### Development Workflow
+
+1. **Fork** the repository
+2. **Create feature branch** (`feat/xxx`)
+3. **Implement + Test** (coverage > 80%)
+4. **Pre-commit checklist** (see `CHECKLIST.md`)
+5. **Submit PR** (use template in `PR_DESCRIPTION.md`)
+6. **Code review** → Merge
+
+### Pre-Commit Checklist
+
+- [ ] No sensitive data (API keys, secrets)
+- [ ] Unit tests pass
+- [ ] Code formatted (Prettier/ESLint)
+- [ ] Documentation updated
+- [ ] Commit message follows convention
+
+---
+
+## 📅 Timeline
+
+| Phase | Content | Duration | Start | End |
+|-------|---------|----------|-------|-----|
+| **Proposal** | This document | 1 day | 2026-04-20 | 2026-04-20 |
+| **Requirements** | Detailed specs | 2-3 days | TBD | - |
+| **Design** | Technical architecture | 3-5 days | TBD | - |
+| **Tasks** | Task breakdown | 1-2 days | TBD | - |
+| **Phase 1** | Memory Graph Pro | 2-3 weeks | TBD | - |
+| **Phase 2** | Coordinator | 1-2 weeks | TBD | - |
+| **Phase 3** | Hermes Skills | 2 weeks | TBD | - |
+| **Phase 4** | Integration & Release | 1 week | TBD | - |
+| **Total** | - | **6-8 weeks** | - | - |
+
+---
+
+## 📄 License
 
 MIT
 
 ---
 
-## Buy Me a Coffee
+## ☕ Support
 
 [!["Buy Me A Coffee"](https://storage.ko-fi.com/cdn/kofi2.png?v=3)](https://ko-fi.com/aila)
 
-## Contact
+---
+
+## 📱 Contact
 
 <img src="assets/wechat-qrcode.jpeg" width="200" alt="WeChat QR Code" />
+
+---
+
+*Built with 🐉 for multi-agent collaboration*
